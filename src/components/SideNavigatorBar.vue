@@ -4,49 +4,47 @@
 			<div class="logo">
 				<div class="logoname">Marce's Project</div>
 			</div>
-			<v-icon color="black" id="btn-menu" @click="isActive = !isActive"
-				>mdi-menu</v-icon
-			>
+			<mdicon name="menu" id="btn-menu" @click="setActive" />
 		</div>
 		<ul class="navlist">
 			<li>
 				<a href="#">
-					<v-icon class="icon">mdi-home</v-icon>
+					<mdicon class="icon" name="home" />
 					<span class="link-name">Inicio</span>
 				</a>
 				<span class="tooltip">Inicio</span>
 			</li>
 			<li>
 				<a href="#">
-					<v-icon class="icon">mdi-account</v-icon>
+					<mdicon class="icon" name="account" />
 					<span class="link-name">Clientes</span>
 				</a>
 				<span class="tooltip">Clientes</span>
 			</li>
 			<li>
 				<a href="#">
-					<v-icon class="icon">mdi-cart</v-icon>
+					<mdicon class="icon" name="cart" />
 					<span class="link-name">Ventas</span>
 				</a>
 				<span class="tooltip">Ventas</span>
 			</li>
 			<li>
 				<a href="#">
-					<v-icon class="icon">mdi-store</v-icon>
+					<mdicon class="icon" name="store" />
 					<span class="link-name">Almacen</span>
 				</a>
 				<span class="tooltip">Almacen</span>
 			</li>
 			<li>
 				<a href="#">
-					<v-icon class="icon">mdi-history</v-icon>
+					<mdicon class="icon" name="history" />
 					<span class="link-name">Historial</span>
 				</a>
 				<span class="tooltip">Historial</span>
 			</li>
 			<li>
 				<a href="#">
-					<v-icon class="icon">mdi-file-account</v-icon>
+					<mdicon class="icon" name="file-account" />
 					<span class="link-name">Estados de cuenta</span>
 				</a>
 				<span class="tooltip">Estados de cuenta</span>
@@ -60,9 +58,14 @@ export default {
 	data: () => ({
 		isActive: false,
 	}),
+
+	props: {
+		getActive: Function,
+	},
 	methods: {
-		isActiveM() {
-			this.isActive ? false : true
+		setActive() {
+			this.isActive = !this.isActive
+			this.getActive(this.isActive)
 		},
 	},
 }
@@ -74,14 +77,14 @@ export default {
 	top: 0;
 	left: 0;
 	height: 100%;
-	width: 78px;
+	width: 50px;
 	padding: 6px 14px;
 	box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 	transition: all 0.5s ease;
 }
 
 .side-bar.active {
-	width: 240px;
+	width: 210px;
 }
 
 .side-bar .logo-content .logo {
@@ -116,6 +119,8 @@ export default {
 	text-align: center;
 	line-height: 50px;
 	transform: translateX(-50%);
+	transition: all 0.5s ease;
+	cursor: pointer;
 }
 
 .side-bar.active #btn-menu {
@@ -124,13 +129,14 @@ export default {
 
 .side-bar ul {
 	margin-top: 20px;
+	padding: 0px;
 }
 
 .side-bar ul li {
 	position: relative;
 	height: 50px;
 	width: 100%;
-	margin: 0 5px;
+	margin: 0 0px;
 	list-style: none;
 	line-height: 50px;
 }

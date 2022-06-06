@@ -6,7 +6,7 @@
 					<span>{{ prop }}</span>
 				</th>
 			</tr>
-			<tr v-for="data in schemas" :key="data.id">
+			<tr v-for="data in propDataTable" :key="data.id">
 				<td v-for="prop in propData" :key="prop">
 					<span>{{ data[prop] }}</span>
 				</td>
@@ -20,17 +20,19 @@ export default {
 	data: () => ({
 		schemas: [
 			{
-				Nombre: 'Roberto Miron Najera',
-				Telefono: '5548328860',
-				RFC: 'RFCDEBETO',
-				'Forma de pago': 'Efectivo',
-				CFDI: 'CFDI',
+				ISBN: '1234567890',
+				Descripcion: 'Kit me divierto y aprendo en Prescolar 1 L/C',
+				Cantidad: 1,
+				'Precio unitario': 64,
+				Descuento: 10,
+				Importe: 120,
 			},
 		],
 	}),
 
 	props: {
 		propData: Array,
+		propDataTable: Array,
 	},
 }
 </script>

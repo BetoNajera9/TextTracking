@@ -1,18 +1,16 @@
 <template>
-	<client-content :setActive="isActive" />
+	<router-view :setActive="isActive" />
 	<side-navigator-bar :getActive="getActiveBar" />
 </template>
 
 <script>
 import SideNavigatorBar from './components/SideNavigatorBar.vue'
-import ClientContent from './components/views/ClientContent.vue'
 
 export default {
 	name: 'App',
 
 	components: {
 		SideNavigatorBar,
-		ClientContent,
 	},
 
 	data: () => ({

@@ -8,45 +8,45 @@
 		</div>
 		<ul class="navlist">
 			<li>
-				<a href="#">
+				<router-link to="/">
 					<mdicon class="icon" name="home" />
 					<span class="link-name">Inicio</span>
-				</a>
+				</router-link>
 				<span class="tooltip">Inicio</span>
 			</li>
 			<li>
-				<a href="#">
+				<router-link to="/client">
 					<mdicon class="icon" name="account" />
 					<span class="link-name">Clientes</span>
-				</a>
+				</router-link>
 				<span class="tooltip">Clientes</span>
 			</li>
 			<li>
-				<a href="#">
+				<router-link to="/sales">
 					<mdicon class="icon" name="cart" />
 					<span class="link-name">Ventas</span>
-				</a>
+				</router-link>
 				<span class="tooltip">Ventas</span>
 			</li>
 			<li>
-				<a href="#">
+				<router-link to="/stock">
 					<mdicon class="icon" name="store" />
 					<span class="link-name">Almacen</span>
-				</a>
+				</router-link>
 				<span class="tooltip">Almacen</span>
 			</li>
 			<li>
-				<a href="#">
+				<router-link to="/history">
 					<mdicon class="icon" name="history" />
 					<span class="link-name">Historial</span>
-				</a>
+				</router-link>
 				<span class="tooltip">Historial</span>
 			</li>
 			<li>
-				<a href="#">
+				<router-link to="/account-states">
 					<mdicon class="icon" name="file-account" />
 					<span class="link-name">Estados de cuenta</span>
-				</a>
+				</router-link>
 				<span class="tooltip">Estados de cuenta</span>
 			</li>
 		</ul>

@@ -200,7 +200,5 @@ export default {
 	width: 250px;
 	border: 0 !important;
 }
-#CFDI {
-	width: 100%;
-}
+
 </style>

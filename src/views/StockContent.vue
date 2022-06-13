@@ -4,70 +4,28 @@
 		<FormKit
 			type="form"
 			:config="{ validationVisibility: 'submit' }"
-			sunmit-label="Crear"
+			sunmit-label="Buscar"
 			form-class="form"
 			actions-class="submit"
 			message-class="message"
 		>
-			<FormKit
-				id="name"
-				type="text"
-				label="Nombre"
-				validation="required"
-				:validation-messages="{
-					required: 'El nombre es requerido.',
-				}"
-				input-class="$reset input"
-				inner-class="$reset inner"
-				outer-class="name"
-			/>
 
 			<FormKit
-				id="phone"
-				type="tel"
-				label="Telefono"
-				validation="required|matches:/^[0-9]{10}$/"
-				:validation-messages="{
-					required: 'El telefono es requerido.',
-					matches: 'El telfono debe de ser minimo 10 numeros.',
-				}"
-				input-class="$reset input"
-				inner-class="$reset inner"
-			/>
-
-			<FormKit
-				id="RFC"
-				type="text"
-				label="RFC"
-				validation="required|matches:/^([A-Z,Ñ,&]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[A-Z|\d]{3})$/"
-				:validation-messages="{
-					required: 'El RFC es requerido.',
-					matches: 'El formato del RFC es invalido.',
-				}"
-				input-class="$reset input"
-				inner-class="$reset inner"
-			/>
-
-			<FormKit
-				id="way-to-pay"
+				id="clave"
 				type="select"
-				label="Forma de pago"
-				:options="['Efectivo', 'Tarjeta de credito/debito']"
+				label="Clave"
+				:options="['9786076271612', '9786076271616']"
 				input-class="$reset input"
 				inner-class="$reset inner"
 			/>
 
 			<FormKit
-				id="CFDI"
+				id="description"
 				type="text"
-				label="Uso de CFDI"
-				validation="required"
-				:validation-messages="{
-					required: 'El CFDI es requerido.',
-				}"
+				label="Descripción"
 				input-class="$reset input"
 				inner-class="$reset inner"
-				outer-class="name"
+				outer-class="description"
 			/>
 		</FormKit>
 		<table-data :propData="propsTable" :propDataTable="propsData" />

@@ -1,37 +1,40 @@
 <template>
 	<div :class="{ content: 'content', active: isActive }">
 		<h1>Estados de Cuenta</h1>
-		<FormKit
-			type="form"
-			:config="{ validationVisibility: 'submit' }"
-			sunmit-label="Buscar"
-			form-class="form"
-			actions-class="submit"
-			message-class="message"
-		>
-
-			<FormKit
-				id="client-account-states"
-				type="select"
-				label="Cliente"
-				:options="['Colegio Howart', 'Colegio Howart']"
-				input-class="$reset input"
-				inner-class="$reset inner"
-			/>
-
-			<FormKit
-				id="payment-account-states"
-				type="number"
-				label="Cantidad a Pagar"
-				validation="required"
-				:validation-messages="{
-					required: 'La cantidad a pagar es requerida.',
-				}"
-				input-class="$reset input"
-				inner-class="$reset inner"
-			/>
-
-		</FormKit>
+		<div class="div-wrap">
+			<div>
+				<FormKit
+					id="client-account-states"
+					type="select"
+					label="Cliente"
+					:options="['Colegio Howart', 'Colegio Howart']"
+					input-class="$reset input"
+					inner-class="$reset inner"
+				/>
+			</div>
+			<br>
+			<div>
+				<FormKit
+					id="payment-account-states"
+					type="number"
+					label="Cantidad a Pagar"
+					validation="required"
+					:validation-messages="{
+						required: 'La cantidad a pagar es requerida.',
+					}"
+					input-class="$reset input"
+					inner-class="$reset inner"
+				/>
+				<FormKit
+					type="form"
+					:config="{ validationVisibility: 'submit' }"
+					sunmit-label="Buscar"
+					form-class="form"
+					actions-class="submit"
+					message-class="message"
+				/>
+			</div>
+		</div>
 		<table-data :propData="propsTable" :propDataTable="propsData" />
 	</div>
 </template>
@@ -154,6 +157,11 @@ export default {
 	column-gap: 20px;
 }
 
+.div-wrap{
+	display: flex;
+	flex-direction: column;
+}
+
 .formkit-outer + .formkit-outer {
 	height: 92px;
 	width: 180px;
@@ -186,6 +194,11 @@ export default {
 .formkit-outer.CFDI {
 	width: 250px;
 	border: 0 !important;
+}
+
+br{
+	height: 5px;
+	background: black;
 }
 
 </style>

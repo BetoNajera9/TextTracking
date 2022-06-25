@@ -1,95 +1,96 @@
 {
-	"name": "marce-s-project",
-	"version": "0.0.1",
-	"private": true,
-	"description": "",
-	"author": {
-		"name": "BetoNajera",
-		"email": "ing.betonajera@gmail.com"
-	},
-	"scripts": {
-		"serve": "vue-cli-service serve",
-		"build": "vue-cli-service build",
-		"lint": "vue-cli-service lint",
-		"dev": "electron src/main.js`",
-		"electron:build": "vue-cli-service electron:build",
-		"electron:serve": "vue-cli-service electron:serve",
-		"postinstall": "electron-builder install-app-deps",
-		"postuninstall": "electron-builder install-app-deps",
-		"api:dev": "NODE_ENV=development nodemon --ignore db --ignore dist_electron  --exec babel-node -r dotenv/config api/server.js",
-		"api:build": "babel api --out-dir dist_api --ignore src/**/*.test.js",
-		"api:start": "NODE_ENV=production node dist_api/server.js"
-	},
-	"main": "background.js",
-	"dependencies": {
-		"@formkit/themes": "^1.0.0-beta.8",
-		"@formkit/vue": "^1.0.0-beta.8",
-		"@mdi/js": "^6.7.96",
-		"axios": "^0.27.2",
-		"concurrently": "^7.2.1",
-		"core-js": "^3.8.3",
-		"cors": "^2.8.5",
-		"lowdb": "^1.0.0",
-		"mdi-vue": "^3.0.13",
-		"uuid": "^8.3.2",
-		"vue": "^3.2.13",
-		"vue-router": "^4.0.3"
-	},
-	"devDependencies": {
-		"@babel/cli": "^7.17.10",
-		"@babel/core": "^7.18.2",
-		"@babel/eslint-parser": "^7.12.16",
-		"@babel/node": "^7.17.10",
-		"@babel/plugin-transform-runtime": "^7.18.2",
-		"@babel/preset-env": "^7.18.2",
-		"@vue/cli-plugin-babel": "~5.0.0",
-		"@vue/cli-plugin-eslint": "~5.0.0",
-		"@vue/cli-plugin-router": "~5.0.0",
-		"@vue/cli-plugin-vuex": "~5.0.0",
-		"@vue/cli-service": "~5.0.0",
-		"electron": "^18.2.0",
-		"electron-devtools-installer": "^3.1.0",
-		"eslint": "^7.32.0",
-		"eslint-plugin-vue": "^8.0.3",
-		"morgan": "^1.10.0",
-		"nodemon": "^2.0.16",
-		"vue-cli-plugin-electron-builder": "~2.1.1",
-		"vue-cli-plugin-pug": "^2.0.0"
-	},
-	"eslintConfig": {
-		"root": true,
-		"env": {
-			"node": true
-		},
-		"extends": [
-			"plugin:vue/vue3-essential",
-			"eslint:recommended"
-		],
-		"parserOptions": {
-			"parser": "@babel/eslint-parser"
-		},
-		"rules": {}
-	},
-	"browserslist": [
-		"> 1%",
-		"last 2 versions",
-		"not dead",
-		"not ie 11"
-	],
-	"_id": "marce-s-project@0.0.1",
-	"bugs": {
-		"url": "https://github.com/betonajera9/Marce-s-Project/issues"
-	},
-	"homepage": "https://github.com/betonajera9/Marce-s-Project#readme",
-	"keywords": [
-		"electron",
-		"node",
-		"vue"
-	],
-	"license": "MIT",
-	"readme": "ERROR: No README data found!",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/betonajera9/Marce-s-Project.git"
-	}
+  "name": "marce-s-project",
+  "version": "0.0.1",
+  "private": true,
+  "description": "",
+  "author": {
+    "name": "BetoNajera",
+    "email": "ing.betonajera@gmail.com"
+  },
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "api:build": "babel api --out-dir dist_api --ignore src/**/*.test.js",
+    "api:dev": "NODE_ENV=development nodemon --ignore db --ignore dist_electron  --exec babel-node -r dotenv/config api/server.js",
+    "api:start": "NODE_ENV=production node dist_api/server.js",
+    "dev": "electron src/main.js`",
+    "electron:build": "vue-cli-service electron:build",
+    "electron:serve": "vue-cli-service electron:serve",
+    "postinstall": "electron-builder install-app-deps",
+    "postuninstall": "electron-builder install-app-deps"
+  },
+  "main": "background.js",
+  "dependencies": {
+    "@formkit/themes": "^1.0.0-beta.8",
+    "@formkit/vue": "^1.0.0-beta.8",
+    "@mdi/js": "^6.7.96",
+    "axios": "^0.27.2",
+    "concurrently": "^7.2.1",
+    "core-js": "^3.8.3",
+    "cors": "^2.8.5",
+    "lowdb": "^1.0.0",
+    "mdi-vue": "^3.0.13",
+    "uuid": "^8.3.2",
+    "vue": "^3.2.13",
+    "vue-router": "^4.0.3",
+    "vuex": "^4.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.17.10",
+    "@babel/core": "^7.18.2",
+    "@babel/eslint-parser": "^7.12.16",
+    "@babel/node": "^7.17.10",
+    "@babel/plugin-transform-runtime": "^7.18.2",
+    "@babel/preset-env": "^7.18.2",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-plugin-vuex": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "electron": "^18.2.0",
+    "electron-devtools-installer": "^3.1.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.16",
+    "vue-cli-plugin-electron-builder": "~2.1.1",
+    "vue-cli-plugin-pug": "^2.0.0"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "@babel/eslint-parser"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "_id": "marce-s-project@0.0.1",
+  "bugs": {
+    "url": "https://github.com/betonajera9/Marce-s-Project/issues"
+  },
+  "homepage": "https://github.com/betonajera9/Marce-s-Project#readme",
+  "keywords": [
+    "electron",
+    "node",
+    "vue"
+  ],
+  "license": "MIT",
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/betonajera9/Marce-s-Project.git"
+  }
 }

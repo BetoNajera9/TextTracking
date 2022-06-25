@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ClientContent from '@/views/ClientContent.vue'
 import SalesContent from '@/views/SalesContent.vue'
 import StockContent from '@/views/StockContent.vue'
+import HistoryContent from '@/views/HistoryContent.vue'
+import AccountStatesContent from '@/views/AccountStatesContent.vue'
 
 const routes = [
 	{
@@ -22,6 +24,16 @@ const routes = [
 		path: '/stock',
 		name: 'stock',
 		component: StockContent,
+	},
+	{
+		path: '/history',
+		name: 'history',
+		component: HistoryContent,
+	},
+	{
+		path: '/account-states',
+		name: 'account-states',
+		component: AccountStatesContent,
 	},
 ]
 

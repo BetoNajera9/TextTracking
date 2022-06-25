@@ -17,14 +17,14 @@
 					value="user-registered"
 					v-bind="{ checked: check1 }"
 				/>
-				<label for="collapsible" class="lbl-toggle">Usuario Registrado</label>
+				<label for="collapsible" class="lbl-toggle">Cliente Registrado</label>
 				<div class="collapsible-content">
 					<div class="content-inner">
 						<FormKit name="account" type="group" :disabled="!check1">
 							<FormKit
 								id="way-to-pay"
 								type="select"
-								label="Usuario"
+								label="Cliente"
 								:options="['Roberto Miron Najera', 'Norma Najera Nunez']"
 								input-class="$reset input"
 								inner-class="$reset inner"

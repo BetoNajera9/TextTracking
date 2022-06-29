@@ -3,12 +3,14 @@ import ClientContent from '@/views/ClientContent.vue'
 import SalesContent from '@/views/SalesContent.vue'
 import StockContent from '@/views/StockContent.vue'
 import HistoryContent from '@/views/HistoryContent.vue'
+import Home from '@/views/Home.vue'
 import AccountStatesContent from '@/views/AccountStatesContent.vue'
 
 const routes = [
 	{
 		path: '/',
 		name: 'home',
+		component: Home,
 	},
 	{
 		path: '/client',

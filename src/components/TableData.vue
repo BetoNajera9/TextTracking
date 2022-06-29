@@ -2,12 +2,12 @@
 	<div class="table">
 		<table class="data-table">
 			<tr>
-				<th v-for="prop in propData" :key="prop">
+				<th v-for="prop in propsTable" :key="prop">
 					<span>{{ prop }}</span>
 				</th>
 			</tr>
-			<tr v-for="data in propDataTable" :key="data.id">
-				<td v-for="prop in propData" :key="prop">
+			<tr v-for="data in customer" :key="data.id">
+				<td v-for="(value, prop) in propsTable" :key="prop">
 					<span>{{ data[prop] }}</span>
 				</td>
 			</tr>
@@ -16,23 +16,33 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
 	data: () => ({
-		schemas: [
-			{
-				ISBN: '1234567890',
-				Descripcion: 'Kit me divierto y aprendo en Prescolar 1 L/C',
-				Cantidad: 1,
-				'Precio unitario': 64,
-				Descuento: 10,
-				Importe: 120,
-			},
-		],
+		propsTable: {},
 	}),
 
+	computed: {
+		...mapGetters({ customer: 'customer/customers' }),
+	},
+
+	created() {
+		switch (this.typeTable) {
+			case 'customer':
+				this.propsTable = {
+					name: 'Nombre',
+					phone: 'Telefono',
+					RFC: 'RFC',
+					'way-to-pay': 'Forma de pago',
+					CFDI: 'CFDI',
+				}
+				break
+		}
+	},
+
 	props: {
-		propData: Array,
-		propDataTable: Array,
+		typeTable: String,
 	},
 }
 </script>

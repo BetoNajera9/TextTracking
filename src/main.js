@@ -5,9 +5,11 @@ import mdiVue from 'mdi-vue/v3'
 import * as mdijs from '@mdi/js'
 import '@formkit/themes/genesis'
 import router from './router'
-import store from './store'
+import { store } from './store'
 
-createApp(App).use(store).use(router)
+createApp(App)
+	.use(store)
+	.use(router)
 	.use(mdiVue, {
 		icons: mdijs,
 	})

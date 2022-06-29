@@ -5,12 +5,16 @@
 
 <script>
 import SideNavigatorBar from './components/SideNavigatorBar.vue'
+import { mapActions } from 'vuex'
 
 export default {
 	name: 'App',
-
 	components: {
 		SideNavigatorBar,
+	},
+
+	beforeMount() {
+		this['customer/setCustomers']()
 	},
 
 	data: () => ({
@@ -18,10 +22,13 @@ export default {
 	}),
 
 	methods: {
-		getActiveBar(isActive) {
-			this.isActive = isActive
+		...mapActions(['customer/setCustomers']),
+		getActiveBar() {
+			this.isActive = !this.isActive
 		},
 	},
+
+	setup() {},
 }
 </script>
 

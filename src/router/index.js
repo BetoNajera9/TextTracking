@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import ClientContent from '@/views/ClientContent.vue'
+import CustomerContent from '@/views/CustomerContent.vue'
 import SalesContent from '@/views/SalesContent.vue'
 import StockContent from '@/views/StockContent.vue'
 import HistoryContent from '@/views/HistoryContent.vue'
@@ -13,9 +13,9 @@ const routes = [
 		component: Home,
 	},
 	{
-		path: '/client',
-		name: 'client',
-		component: ClientContent,
+		path: '/customer',
+		name: 'customer',
+		component: CustomerContent,
 	},
 	{
 		path: '/sales',

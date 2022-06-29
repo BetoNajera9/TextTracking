@@ -4,7 +4,7 @@
 		<div class="div-wrap">
 			<div>
 				<FormKit
-					id="client-account-states"
+					id="customer-account-states"
 					type="select"
 					label="Cliente"
 					:options="['Colegio Howart', 'Colegio Howart']"
@@ -12,7 +12,7 @@
 					inner-class="$reset inner"
 				/>
 			</div>
-			<br>
+			<br />
 			<div>
 				<FormKit
 					id="payment-account-states"
@@ -48,7 +48,14 @@ export default {
 	},
 	data: () => ({
 		isActive: false,
-		propsTable: ['Folio', 'Descripcion', 'Cantidad', 'Precio Unitario', 'Descuento', 'Importe'],
+		propsTable: [
+			'Folio',
+			'Descripcion',
+			'Cantidad',
+			'Precio Unitario',
+			'Descuento',
+			'Importe',
+		],
 		propsData: [
 			{
 				Folio: '12345678',
@@ -56,7 +63,7 @@ export default {
 				Cantidad: '1',
 				'Precio Unitario': '$320.00',
 				Descuento: '$64.00',
-				Importe: '$640.00'
+				Importe: '$640.00',
 			},
 			{
 				Folio: '12345678',
@@ -64,7 +71,7 @@ export default {
 				Cantidad: '1',
 				'Precio Unitario': '$320.00',
 				Descuento: '$64.00',
-				Importe: '$640.00'
+				Importe: '$640.00',
 			},
 			{
 				Folio: '12345678',
@@ -72,7 +79,7 @@ export default {
 				Cantidad: '1',
 				'Precio Unitario': '$320.00',
 				Descuento: '$64.00',
-				Importe: '$640.00'
+				Importe: '$640.00',
 			},
 			{
 				Folio: '12345678',
@@ -80,7 +87,7 @@ export default {
 				Cantidad: '1',
 				'Precio Unitario': '$320.00',
 				Descuento: '$64.00',
-				Importe: '$640.00'
+				Importe: '$640.00',
 			},
 			{
 				Folio: '12345678',
@@ -88,7 +95,7 @@ export default {
 				Cantidad: '1',
 				'Precio Unitario': '$320.00',
 				Descuento: '$64.00',
-				Importe: '$640.00'
+				Importe: '$640.00',
 			},
 			{
 				Folio: '12345678',
@@ -96,7 +103,7 @@ export default {
 				Cantidad: '1',
 				'Precio Unitario': '$320.00',
 				Descuento: '$64.00',
-				Importe: '$640.00'
+				Importe: '$640.00',
 			},
 			{
 				Folio: '12345678',
@@ -104,7 +111,7 @@ export default {
 				Cantidad: '1',
 				'Precio Unitario': '$320.00',
 				Descuento: '$64.00',
-				Importe: '$640.00'
+				Importe: '$640.00',
 			},
 			{
 				Folio: '12345678',
@@ -112,7 +119,7 @@ export default {
 				Cantidad: '1',
 				'Precio Unitario': '$320.00',
 				Descuento: '$64.00',
-				Importe: '$640.00'
+				Importe: '$640.00',
 			},
 		],
 	}),
@@ -157,7 +164,7 @@ export default {
 	column-gap: 20px;
 }
 
-.div-wrap{
+.div-wrap {
 	display: flex;
 	flex-direction: column;
 }
@@ -196,9 +203,8 @@ export default {
 	border: 0 !important;
 }
 
-br{
+br {
 	height: 5px;
 	background: black;
 }
-
 </style>

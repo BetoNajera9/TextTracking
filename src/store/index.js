@@ -1,20 +1,24 @@
 import { createStore } from 'vuex'
 import {
-	ClientModule,
+	CustomerModule,
 	StockModule,
 	HistoryModule,
 	AccountStatementsModule,
 } from './modules'
 
-export default createStore({
+export const store = createStore({
 	state: {},
 	getters: {},
 	mutations: {},
 	actions: {},
 	modules: {
-		client: ClientModule,
+		customer: CustomerModule,
 		stock: StockModule,
 		history: HistoryModule,
 		accountS: AccountStatementsModule,
 	},
 })
+
+export function useStore() {
+	return store
+}

@@ -4,15 +4,17 @@
 		<FormKit
 			type="form"
 			:config="{ validationVisibility: 'submit' }"
-			sunmit-label="Crear"
+			submit-label="Crear"
 			form-class="form"
 			actions-class="submit"
 			message-class="message"
+			@submit="createCustome"
 		>
 			<FormKit
 				id="name"
 				type="text"
 				label="Nombre"
+				v-model="data.name"
 				validation="required"
 				:validation-messages="{
 					required: 'El nombre es requerido.',
@@ -26,6 +28,7 @@
 				id="phone"
 				type="tel"
 				label="Telefono"
+				v-model="data.phone"
 				validation="required|matches:/^[0-9]{10}$/"
 				:validation-messages="{
 					required: 'El telefono es requerido.',
@@ -39,7 +42,8 @@
 				id="RFC"
 				type="text"
 				label="RFC"
-				validation="required|matches:/^([A-Z,Ñ,&]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[A-Z|\d]{3})$/"
+				v-model="data.RFC"
+				validation="required|matches:/^[A-Z]+$/"
 				:validation-messages="{
 					required: 'El RFC es requerido.',
 					matches: 'El formato del RFC es invalido.',
@@ -52,6 +56,8 @@
 				id="way-to-pay"
 				type="select"
 				label="Forma de pago"
+				v-model="data['wat-to-pay']"
+				value="Efectivo"
 				:options="['Efectivo', 'Tarjeta de credito/debito']"
 				input-class="$reset input"
 				inner-class="$reset inner"
@@ -61,6 +67,7 @@
 				id="CFDI"
 				type="text"
 				label="Uso de CFDI"
+				v-model="data.CFDI"
 				validation="required"
 				:validation-messages="{
 					required: 'El CFDI es requerido.',
@@ -70,33 +77,44 @@
 				outer-class="name"
 			/>
 		</FormKit>
-		<table-data :propData="propsTable" :propDataTable="propsData" />
+		<table-data :typeTable="'customer'" />
 	</div>
 </template>
 
 <script>
 import TableData from '../components/TableData.vue'
+import { mapActions } from 'vuex'
 
 export default {
 	components: {
 		TableData,
 	},
-	data: () => ({
-		isActive: false,
-		propsTable: ['Nombre', 'Telefono', 'RFC', 'Forma de pago', 'CFDI'],
-		propsData: [
-			{
-				Nombre: 'Roberto Miron Najera',
-				Telefono: '5548328860',
-				RFC: 'RFCDEBETO',
-				'Forma de pago': 'Efectivo',
-				CFDI: 'CFDI',
-			},
-		],
-	}),
-
 	props: {
 		setActive: Boolean,
+	},
+	data: () => ({
+		isActive: false,
+		data: {
+			name: '',
+			phone: '',
+			RFC: '',
+			'way-to-pay': '',
+			CFDI: '',
+		},
+	}),
+
+	methods: {
+		...mapActions(['customer/setCustomer']),
+		createCustome: function () {
+			this['customer/setCustomer'](this.data)
+			this.data = {
+				name: '',
+				phone: '',
+				RFC: '',
+				'way-to-pay': '',
+				CFDI: '',
+			}
+		},
 	},
 
 	watch: {

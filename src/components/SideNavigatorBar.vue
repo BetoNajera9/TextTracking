@@ -15,7 +15,7 @@
 				<span class="tooltip">Inicio</span>
 			</li>
 			<li>
-				<router-link to="/client">
+				<router-link to="/customer">
 					<mdicon class="icon" name="account" />
 					<span class="link-name">Clientes</span>
 				</router-link>

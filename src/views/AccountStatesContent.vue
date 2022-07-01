@@ -35,7 +35,7 @@
 				/>
 			</div>
 		</div>
-		<table-data :propData="propsTable" :propDataTable="propsData" />
+		<table-data :typeTable="'account'" />
 	</div>
 </template>
 
@@ -48,80 +48,6 @@ export default {
 	},
 	data: () => ({
 		isActive: false,
-		propsTable: [
-			'Folio',
-			'Descripcion',
-			'Cantidad',
-			'Precio Unitario',
-			'Descuento',
-			'Importe',
-		],
-		propsData: [
-			{
-				Folio: '12345678',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00',
-			},
-			{
-				Folio: '12345678',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00',
-			},
-			{
-				Folio: '12345678',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00',
-			},
-			{
-				Folio: '12345678',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00',
-			},
-			{
-				Folio: '12345678',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00',
-			},
-			{
-				Folio: '12345678',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00',
-			},
-			{
-				Folio: '12345678',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00',
-			},
-			{
-				Folio: '12345678',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00',
-			},
-		],
 	}),
 
 	props: {

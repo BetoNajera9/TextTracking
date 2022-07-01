@@ -9,7 +9,6 @@
 			actions-class="submit"
 			message-class="message"
 		>
-
 			<FormKit
 				id="name-history"
 				type="text"
@@ -28,7 +27,7 @@
 				outer-class="description-history"
 			/>
 
-            <FormKit
+			<FormKit
 				id="folio-history"
 				type="text"
 				label="Folio"
@@ -37,7 +36,7 @@
 				outer-class="folio-history"
 			/>
 		</FormKit>
-		<table-data :propData="propsTable" :propDataTable="propsData" />
+		<table-data :typeTable="'history'" />
 	</div>
 </template>
 
@@ -50,81 +49,6 @@ export default {
 	},
 	data: () => ({
 		isActive: false,
-		propsTable: ['Folio', 'Nombre Cliente', 'Descripcion', 'Cantidad', 'Precio Unitario', 'Descuento', 'Importe'],
-		propsData: [
-			{
-				Folio: '12345678',
-                'Nombre Cliente': 'Colegio Howart',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00'
-			},
-			{
-				Folio: '12345678',
-                'Nombre Cliente': 'Colegio Howart',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00'
-			},
-			{
-				Folio: '12345678',
-                'Nombre Cliente': 'Colegio Howart',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00'
-			},
-			{
-				Folio: '12345678',
-                'Nombre Cliente': 'Colegio Howart',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00'
-			},
-			{
-				Folio: '12345678',
-                'Nombre Cliente': 'Colegio Howart',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00'
-			},
-			{
-				Folio: '12345678',
-                'Nombre Cliente': 'Colegio Howart',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00'
-			},
-			{
-				Folio: '12345678',
-                'Nombre Cliente': 'Colegio Howart',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00'
-			},
-			{
-				Folio: '12345678',
-                'Nombre Cliente': 'Colegio Howart',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00'
-			},
-		],
 	}),
 
 	props: {
@@ -200,5 +124,4 @@ export default {
 	width: 250px;
 	border: 0 !important;
 }
-
 </style>

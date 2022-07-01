@@ -22,7 +22,7 @@
 					<div class="content-inner">
 						<FormKit name="account" type="group" :disabled="!check1">
 							<FormKit
-								id="way-to-pay"
+								id="WayToPay"
 								type="select"
 								label="Cliente"
 								:options="['Roberto Miron Najera', 'Norma Najera Nunez']"
@@ -86,7 +86,7 @@
 							/>
 
 							<FormKit
-								id="way-to-pay"
+								id="WayToPay"
 								type="select"
 								label="Forma de pago"
 								:options="['Efectivo', 'Tarjeta de credito/debito']"
@@ -155,7 +155,7 @@
 				/>
 			</div>
 		</FormKit>
-		<table-data :propData="propsTable" :propDataTable="propsData" />
+		<table-data :typeTable="'sales'" />
 	</div>
 </template>
 
@@ -169,24 +169,6 @@ export default {
 		isActive: false,
 		check1: true,
 		check2: false,
-		propsTable: [
-			'ISBN',
-			'Descripcion',
-			'Cantidad',
-			'Precio unitario',
-			'Descuento',
-			'Importe',
-		],
-		propsData: [
-			{
-				ISBN: '1234567890',
-				Descripcion: 'Kit me divierto y aprendo en Prescolar 1 L/C',
-				Cantidad: 1,
-				'Precio unitario': 64,
-				Descuento: 10,
-				Importe: 120,
-			},
-		],
 	}),
 
 	props: {

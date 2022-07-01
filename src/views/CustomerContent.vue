@@ -3,6 +3,7 @@
 		<h1>Cliente</h1>
 		<FormKit
 			type="form"
+			id="customerForm"
 			:config="{ validationVisibility: 'submit' }"
 			submit-label="Crear"
 			form-class="form"
@@ -53,11 +54,10 @@
 			/>
 
 			<FormKit
-				id="way-to-pay"
+				id="WayToPay"
 				type="select"
 				label="Forma de pago"
-				v-model="data['wat-to-pay']"
-				value="Efectivo"
+				v-model="data.WayToPay"
 				:options="['Efectivo', 'Tarjeta de credito/debito']"
 				input-class="$reset input"
 				inner-class="$reset inner"
@@ -98,22 +98,16 @@ export default {
 			name: '',
 			phone: '',
 			RFC: '',
-			'way-to-pay': '',
+			WayToPay: 'Efectivo',
 			CFDI: '',
 		},
 	}),
 
 	methods: {
 		...mapActions(['customer/setCustomer']),
-		createCustome: function () {
-			this['customer/setCustomer'](this.data)
-			this.data = {
-				name: '',
-				phone: '',
-				RFC: '',
-				'way-to-pay': '',
-				CFDI: '',
-			}
+		createCustome: async function () {
+			await this['customer/setCustomer'](this.data)
+			this.$formkit.reset('customerForm')
 		},
 	},
 

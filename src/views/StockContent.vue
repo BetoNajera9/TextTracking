@@ -9,7 +9,6 @@
 			actions-class="submit"
 			message-class="message"
 		>
-
 			<FormKit
 				id="clave"
 				type="select"
@@ -28,7 +27,7 @@
 				outer-class="description"
 			/>
 		</FormKit>
-		<table-data :propData="propsTable" :propDataTable="propsData" />
+		<table-data :typeTable="'stock'" />
 	</div>
 </template>
 
@@ -41,73 +40,6 @@ export default {
 	},
 	data: () => ({
 		isActive: false,
-		propsTable: ['Clave', 'Descripcion', 'Cantidad', 'Precio Unitario', 'Descuento', 'Importe'],
-		propsData: [
-			{
-				Clave: '9786076271612',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00'
-			},
-			{
-				Clave: '9786076271612',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00'
-			},
-			{
-				Clave: '9786076271612',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00'
-			},
-			{
-				Clave: '9786076271612',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00'
-			},
-			{
-				Clave: '9786076271612',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00'
-			},
-			{
-				Clave: '9786076271612',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00'
-			},
-			{
-				Clave: '9786076271612',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00'
-			},
-			{
-				Clave: '9786076271612',
-				Descripcion: 'Kit me divierto y aprendo en preescolar 1 L/C',
-				Cantidad: '1',
-				'Precio Unitario': '$320.00',
-				Descuento: '$64.00',
-				Importe: '$640.00'
-			},
-		],
 	}),
 
 	props: {
@@ -183,5 +115,4 @@ export default {
 	width: 250px;
 	border: 0 !important;
 }
-
 </style>

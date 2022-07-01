@@ -56,62 +56,23 @@ const updateCustomer = async (req, res) => {
 	}
 }
 
+const deleteCustomer = async (req, res) => {
+	try {
+		const deleteData = { id: req.params.id }
+
+		const data = customers.deleteCustomer(deleteData)
+
+		res.json({ succes: true, data })
+	} catch (error) {
+		console.log(error)
+		res.status(500).send(error)
+	}
+}
+
 export default {
 	createCustomer,
 	getAllCustomers,
 	getCustomer,
 	updateCustomer,
+	deleteCustomer,
 }
-
-// import { getConnection } from '../lib/database'
-
-// export const getTasks = (req, res) => {
-// 	const tasks = getConnection().data.tasks
-// 	res.json(tasks)
-// }
-
-// export const getTask = (req, res) => {
-// 	const taskFound = getConnection().data.tasks.find(
-// 		(t) => t.id === req.params.id
-// 	)
-// 	if (!taskFound) res.sendStatus(404)
-// 	res.json(taskFound)
-// }
-
-// export const updateTask = async (req, res) => {
-// 	const { name, description } = req.body
-
-// 	try {
-// 		const db = getConnection()
-// 		const taskFound = db.data.tasks.find((t) => t.id === req.params.id)
-// 		if (!taskFound) return res.sendStatus(404)
-
-// 		taskFound.name = name
-// 		taskFound.description = description
-
-// 		db.data.tasks.map((t) => (t.id === req.params.id ? taskFound : t))
-
-// 		await db.write()
-
-// 		res.json(taskFound)
-// 	} catch (error) {
-// 		return res.status(500).send(error.message)
-// 	}
-// }
-
-// export const deleteTask = async (req, res) => {
-// 	const db = getConnection()
-// 	const taskFound = db.data.tasks.find((t) => t.id === req.params.id)
-// 	if (!taskFound) res.sendStatus(404)
-
-// 	const newTasks = db.data.tasks.filter((t) => t.id !== req.params.id)
-// 	db.data.tasks = newTasks
-// 	await db.write()
-
-// 	return res.json(taskFound)
-// }
-
-// export const count = async (req, res) => {
-// 	const totalTasks = getConnection().data.tasks.length
-// 	res.json(totalTasks)
-// }

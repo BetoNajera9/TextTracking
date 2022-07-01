@@ -11,6 +11,7 @@ router.post('/customer', customer.createCustomer)
 router.get('/customers', customer.getAllCustomers)
 router.get('/customer', customer.getCustomer)
 router.put('/customer/:id', customer.updateCustomer)
+router.delete('/customer/:id', customer.deleteCustomer)
 
 // Sales enpoints
 router.post('/sale', sale.createSale)

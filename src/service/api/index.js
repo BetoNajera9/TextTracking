@@ -9,7 +9,6 @@ export default class {
 		myHeaders.append('Content-Type', 'application/json')
 
 		this.requestOptions = {
-			method: 'POST',
 			headers: myHeaders,
 			redirect: 'follow',
 		}
@@ -25,6 +24,26 @@ export default class {
 		const response = await fetch('/api/customer', {
 			...this.requestOptions,
 			body: JSON.stringify(data),
+			method: 'POST',
+		})
+		const res = await response.json()
+		return res.data
+	}
+
+	async updateCustomer(id, data) {
+		const response = await fetch(`/api/customer/${id}`, {
+			...this.requestOptions,
+			body: JSON.stringify(data),
+			method: 'PUT',
+		})
+		const res = await response.json()
+		return res.data
+	}
+
+	async deleteCustomer(id) {
+		const response = await fetch(`/api/customer/${id}`, {
+			...this.requestOptions,
+			method: 'DELETE',
 		})
 		const res = await response.json()
 		return res.data

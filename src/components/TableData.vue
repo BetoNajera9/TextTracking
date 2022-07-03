@@ -7,7 +7,7 @@
 				</th>
 				<th>Acciones</th>
 			</tr>
-			<tr v-for="data in customers" :key="data.id">
+			<tr v-for="data in content" :key="data.id">
 				<td v-for="(value, prop) in propsTable" :key="prop">
 					<span v-if="editingId !== data.id">{{ data[prop] }}</span>
 					<input v-else type="text" v-model="dataEdit[prop]" />
@@ -44,62 +44,29 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { computed, ref } from 'vue'
+
+import { useStore } from '../store'
 
 export default {
-	data: () => ({
-		dataEdit: {},
-		propsTable: {},
-		editingId: '',
-		editing: false,
-	}),
-
-	methods: {
-		...mapActions(['customer/updateCustomer', 'customer/deleteCustomer']),
-		toogleEditing(id) {
-			if (this.editingId === id) {
-				this.editing = !this.editing
-				this.editingId = ''
-			} else if (this.editingId === '') {
-				this.editing = !this.editing
-				this.editingId = id
-			} else this.editingId = id
-		},
-		editRow(id) {
-			this.dataEdit = JSON.parse(JSON.stringify(this.customer(id)))
-
-			this.toogleEditing(id)
-		},
-		async editRowCorrect(id) {
-			await this['customer/updateCustomer'](this.dataEdit)
-
-			this.toogleEditing(id)
-		},
-		async deleteRow(id) {
-			await this['customer/deleteCustomer'](id)
-		},
+	props: {
+		typeTable: String,
 	},
 
-	computed: {
-		...mapGetters({
-			customers: 'customer/customers',
-			customer: 'customer/customer',
-		}),
-	},
-
-	created() {
-		switch (this.typeTable) {
+	setup(props) {
+		const propsTable = ref({})
+		switch (props.typeTable) {
 			case 'customer':
-				this.propsTable = {
+				propsTable.value = {
 					name: 'Nombre',
 					phone: 'Telefono',
 					RFC: 'RFC',
-					WayToPay: 'Forma de pago',
+					wayToPay: 'Forma de pago',
 					CFDI: 'CFDI',
 				}
 				break
 			case 'sales':
-				this.propsTable = {
+				propsTable.value = {
 					ISBN: 'ISBN',
 					description: 'Descripcion',
 					number: 'Cantidad',
@@ -109,7 +76,7 @@ export default {
 				}
 				break
 			case 'stock':
-				this.propsTable = {
+				propsTable.value = {
 					ISBN: 'ISBN',
 					description: 'Descripcion',
 					number: 'Cantidad',
@@ -118,7 +85,7 @@ export default {
 				}
 				break
 			case 'history':
-				this.propsTable = {
+				propsTable.value = {
 					id: 'Folio',
 					customerName: 'Nombre del cliente',
 					description: 'Descripcion',
@@ -129,7 +96,7 @@ export default {
 				}
 				break
 			case 'account':
-				this.propsTable = {
+				propsTable.value = {
 					id: 'Folio',
 					description: 'Descripcion',
 					number: 'Cantidad',
@@ -139,10 +106,56 @@ export default {
 				}
 				break
 		}
-	},
 
-	props: {
-		typeTable: String,
+		const store = useStore()
+		const typeT =
+			props.typeTable.charAt(0).toUpperCase() + props.typeTable.slice(1)
+
+		const content = computed(() => store.getters[`${props.typeTable}s`])
+
+		const dataEdit = ref({})
+		const editingId = ref('')
+		const editing = ref(false)
+
+		const toogleEditing = (id) => {
+			if (editingId.value === id) {
+				editing.value = !editing.value
+				editingId.value = ''
+			} else if (editingId.value === '') {
+				editing.value = !editing.value
+				editingId.value = id
+			} else editingId.value = id
+		}
+
+		const editRow = (id) => {
+			dataEdit.value = JSON.parse(
+				JSON.stringify(store.getters[`${props.typeTable}`](id))
+			)
+
+			toogleEditing(id)
+		}
+
+		const editRowCorrect = async (id) => {
+			await store.dispatch(`update${typeT}`, dataEdit.value)
+
+			toogleEditing(id)
+		}
+
+		const deleteRow = async (id) => {
+			await store.dispatch(`delete${typeT}`, id)(id)
+		}
+
+		return {
+			content,
+			editingId,
+			editing,
+			dataEdit,
+			toogleEditing,
+			editRow,
+			editRowCorrect,
+			deleteRow,
+			propsTable,
+		}
 	},
 }
 </script>

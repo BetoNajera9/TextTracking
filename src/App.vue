@@ -5,7 +5,8 @@
 
 <script>
 import SideNavigatorBar from './components/SideNavigatorBar.vue'
-import { mapActions } from 'vuex'
+import { useStore } from './store'
+import { onBeforeMount, ref } from 'vue'
 
 export default {
 	name: 'App',
@@ -13,22 +14,24 @@ export default {
 		SideNavigatorBar,
 	},
 
-	beforeMount() {
-		this['customer/setCustomers']()
+	setup() {
+		const store = useStore()
+
+		const isActive = ref(false)
+
+		const getActiveBar = () => {
+			isActive.value = !isActive.value
+		}
+
+		onBeforeMount(() => {
+			store.dispatch('setCustomers')
+		})
+
+		return {
+			getActiveBar,
+			isActive,
+		}
 	},
-
-	data: () => ({
-		isActive: false,
-	}),
-
-	methods: {
-		...mapActions(['customer/setCustomers']),
-		getActiveBar() {
-			this.isActive = !this.isActive
-		},
-	},
-
-	setup() {},
 }
 </script>
 

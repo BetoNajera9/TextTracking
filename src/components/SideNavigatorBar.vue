@@ -65,7 +65,7 @@ export default {
 	methods: {
 		setActive() {
 			this.isActive = !this.isActive
-			this.getActive(this.isActive)
+			this.getActive()
 		},
 	},
 }

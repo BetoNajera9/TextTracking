@@ -54,10 +54,10 @@
 			/>
 
 			<FormKit
-				id="WayToPay"
+				id="wayToPay"
 				type="select"
 				label="Forma de pago"
-				v-model="data.WayToPay"
+				v-model="data.wayToPay"
 				:options="['Efectivo', 'Tarjeta de credito/debito']"
 				input-class="$reset input"
 				inner-class="$reset inner"
@@ -98,7 +98,7 @@ export default {
 			name: '',
 			phone: '',
 			RFC: '',
-			WayToPay: 'Efectivo',
+			wayToPay: 'Efectivo',
 			CFDI: '',
 		},
 	}),
@@ -106,7 +106,7 @@ export default {
 	methods: {
 		...mapActions(['customer/setCustomer']),
 		createCustome: async function () {
-			await this['customer/setCustomer'](this.data)
+			await this.$store.dispatch('setCustomer', this.data)
 			this.$formkit.reset('customerForm')
 		},
 	},

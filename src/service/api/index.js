@@ -51,27 +51,53 @@ export default class {
 
 	async getStock() {
 		const response = await fetch('/api/stocks', this.getConfig)
-		const data = await response.json()
+		const { data } = await response.json()
 		return data
+	}
+
+	async setStock(data) {
+		const response = await fetch('/api/stock', {
+			...this.requestOptions,
+			body: JSON.stringify(data),
+			method: 'POST',
+		})
+		const res = await response.json()
+		return res.data
+	}
+
+	async updateStock(id, data) {
+		const response = await fetch(`/api/stock/${id}`, {
+			...this.requestOptions,
+			body: JSON.stringify(data),
+			method: 'PUT',
+		})
+		const res = await response.json()
+		return res.data
+	}
+
+	async setSale(data) {
+		const response = await fetch('/api/sale', {
+			...this.requestOptions,
+			body: JSON.stringify(data),
+			method: 'POST',
+		})
+		const res = await response.json()
+		return res.data
+	}
+
+	async updateSale(id, data) {
+		const response = await fetch(`/api/sale/${id}`, {
+			...this.requestOptions,
+			body: JSON.stringify(data),
+			method: 'PUT',
+		})
+		const res = await response.json()
+		return res.data
 	}
 
 	async getAccountStatements() {
 		const response = await fetch('/api/accountStatements', this.getConfig)
 		const data = await response.json()
 		return data
-	}
-
-	async addCustomers(customer) {
-		const raw = JSON.stringify(customer)
-		this.getConfig.body = raw
-
-		await fetch('localhost:3000/api/customer', this.getConfig)
-	}
-
-	async addSale(customer) {
-		const raw = JSON.stringify(customer)
-		this.getConfig.body = raw
-
-		await fetch('localhost:3000/api/customer', this.getConfig)
 	}
 }

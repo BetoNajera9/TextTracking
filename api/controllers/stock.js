@@ -4,7 +4,7 @@ export default class Stocks {
 	constructor() {
 		const db = new DB()
 		this.db = db.connection
-		this.collection = 'stocks'
+		this.collection = 'stock'
 	}
 
 	getAllStocks() {

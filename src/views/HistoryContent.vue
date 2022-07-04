@@ -1,58 +1,75 @@
 <template>
 	<div :class="{ content: 'content', active: isActive }">
 		<h1>Historial</h1>
-		<FormKit
-			type="form"
-			:config="{ validationVisibility: 'submit' }"
-			sunmit-label="Buscar"
-			form-class="form"
-			actions-class="submit"
-			message-class="message"
-		>
-			<FormKit
-				id="name-history"
-				type="text"
-				label="Nombre del Cliente"
-				input-class="$reset input"
-				inner-class="$reset inner"
-				outer-class="name-history"
+		<div class="form">
+			<div class="wrapp-search">
+				<label class="formkit-label">Nombre del cliente</label>
+				<search-bar
+					:dataType="'historys'"
+					:propSearch="'name'"
+					:setData="getDataByName"
+				/>
+			</div>
+			<div class="wrapp-search">
+				<label class="formkit-label">Folio</label>
+				<search-bar
+					:dataType="'historys'"
+					:propSearch="'id'"
+					:setData="getDataById"
+				/>
+			</div>
+		</div>
+		<div class="filter-list" v-for="filter in filters" :key="filter.label">
+			<span class="filter">{{ filter.label }}</span>
+			<mdicon
+				class="close-filter"
+				name="close"
+				id="btn-close"
+				@click="removeFilter(filter.label)"
 			/>
-
-			<FormKit
-				id="description-history"
-				type="text"
-				label="Descripción"
-				input-class="$reset input"
-				inner-class="$reset inner"
-				outer-class="description-history"
-			/>
-
-			<FormKit
-				id="folio-history"
-				type="text"
-				label="Folio"
-				input-class="$reset input"
-				inner-class="$reset inner"
-				outer-class="folio-history"
-			/>
-		</FormKit>
-		<table-data :typeTable="'history'" />
+		</div>
+		<table-data :typeTable="'history'" :filters="filters" />
 	</div>
 </template>
 
 <script>
 import TableData from '../components/TableData.vue'
+import SearchBar from '../components/SearchBar.vue'
 
 export default {
 	components: {
 		TableData,
+		SearchBar,
 	},
 	data: () => ({
 		isActive: false,
+		filters: [],
 	}),
 
 	props: {
 		setActive: Boolean,
+	},
+	methods: {
+		getDataById(data) {
+			this.filters.push({
+				value: data.id,
+				prop: 'id',
+				label: `Folio:${data.id}`,
+			})
+		},
+		getDataByName(data) {
+			this.filters.push({
+				value: data.name,
+				prop: 'name',
+				label: `Nombre:${data.name}`,
+			})
+		},
+		removeFilter(filter) {
+			this.filters = this.filters.filter((element) => {
+				if (element.label === filter) return false
+				return true
+			})
+		},
 	},
 
 	watch: {

@@ -2,48 +2,150 @@
 	<div :class="{ content: 'content', active: isActive }">
 		<h1>Almacén</h1>
 		<FormKit
+			id="addMaterialForm"
 			type="form"
 			:config="{ validationVisibility: 'submit' }"
-			sunmit-label="Buscar"
 			form-class="form"
 			actions-class="submit"
 			message-class="message"
+			submit-label="Agregar"
+			@submit="addToStock"
 		>
 			<FormKit
-				id="clave"
-				type="select"
-				label="Clave"
-				:options="['9786076271612', '9786076271616']"
+				id="ISBN"
+				type="text"
+				label="ISBN"
+				v-model="data.id"
+				validation="required"
+				:validation-messages="{
+					required: 'El ISBN es requerido.',
+				}"
 				input-class="$reset input"
 				inner-class="$reset inner"
+				outer-class="description"
 			/>
-
 			<FormKit
 				id="description"
 				type="text"
 				label="Descripción"
+				v-model="data.description"
+				validation="required"
+				:validation-messages="{
+					required: 'La descripcion es requerido.',
+				}"
+				input-class="$reset input"
+				inner-class="$reset inner"
+				outer-class="description"
+			/>
+			<FormKit
+				id="number"
+				type="number"
+				label="Cantidad"
+				v-model="data.number"
+				validation="required"
+				:validation-messages="{
+					required: 'La cantidad es requerido.',
+				}"
+				input-class="$reset input"
+				inner-class="$reset inner"
+				outer-class="description"
+			/>
+			<FormKit
+				id="unitPrice"
+				type="number"
+				label="Precio unitaio"
+				v-model="data.unitPrice"
+				validation="required"
+				:validation-messages="{
+					required: 'El precio unitario es requerido.',
+				}"
 				input-class="$reset input"
 				inner-class="$reset inner"
 				outer-class="description"
 			/>
 		</FormKit>
-		<table-data :typeTable="'stock'" />
+
+		<div class="form">
+			<div class="wrapp-search">
+				<label class="formkit-label">ISBN</label>
+				<search-bar
+					:dataType="'stocks'"
+					:propSearch="'id'"
+					:setData="getDataById"
+				/>
+			</div>
+
+			<div class="wrapp-search">
+				<label class="formkit-label">Material</label>
+				<search-bar
+					:dataType="'stocks'"
+					:propSearch="'description'"
+					:setData="getDataByName"
+				/>
+			</div>
+		</div>
+		<div class="filter-list" v-for="filter in filters" :key="filter.label">
+			<span class="filter">{{ filter.label }}</span>
+			<mdicon
+				class="close-filter"
+				name="close"
+				id="btn-close"
+				@click="removeFilter(filter.label)"
+			/>
+		</div>
+		<table-data :typeTable="'stock'" :filters="filters" />
 	</div>
 </template>
 
 <script>
 import TableData from '../components/TableData.vue'
+import SearchBar from '../components/SearchBar.vue'
 
 export default {
 	components: {
 		TableData,
+		SearchBar,
 	},
 	data: () => ({
 		isActive: false,
+		filters: [],
+		data: {
+			id: '',
+			description: '',
+			number: 0,
+			unitPrice: 0,
+		},
 	}),
 
 	props: {
 		setActive: Boolean,
+	},
+
+	methods: {
+		addToStock: async function () {
+			await this.$store.dispatch('setStock', this.data)
+			this.$formkit.reset('addMaterialForm')
+		},
+		getDataById(data) {
+			this.filters.push({
+				value: data.id,
+				prop: 'id',
+				label: `ISBN:${data.id}`,
+			})
+		},
+		getDataByName(data) {
+			this.filters.push({
+				value: data.name,
+				prop: 'description',
+				label: `Name:${data.name}`,
+			})
+		},
+		removeFilter(filter) {
+			this.filters = this.filters.filter((element) => {
+				if (element.label === filter) return false
+				return true
+			})
+		},
 	},
 
 	watch: {
@@ -80,6 +182,7 @@ export default {
 	display: flex;
 	flex-wrap: wrap;
 	column-gap: 20px;
+	margin: 10px;
 }
 
 .formkit-outer + .formkit-outer {
@@ -114,5 +217,9 @@ export default {
 .formkit-outer.CFDI {
 	width: 250px;
 	border: 0 !important;
+}
+
+.close-filter {
+	cursor: pointer;
 }
 </style>

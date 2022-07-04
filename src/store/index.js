@@ -6,8 +6,11 @@ const api = new Api()
 export const store = createStore({
 	state: () => ({
 		customers: [],
+		stock: [],
+		sales: [],
 	}),
 	getters: {
+		// Customers Getters
 		customers(state) {
 			return state.customers
 		},
@@ -19,8 +22,35 @@ export const store = createStore({
 		customer(state) {
 			return (id) => state.customers.find((element) => element.id === id)
 		},
+
+		// Sales Getters
+		sales(state) {
+			return state.sales
+		},
+		salesInput(state) {
+			return state.sales.map((element) => {
+				return { label: element.name, value: element.id }
+			})
+		},
+		sale(state) {
+			return (id) => state.sales.find((element) => element.id === id)
+		},
+
+		// Stock Getters
+		stocks(state) {
+			return state.stock
+		},
+		stocksInput(state) {
+			return state.stock.map((element) => {
+				return { label: element.name, value: element.id }
+			})
+		},
+		stock(state) {
+			return (id) => state.stock.find((element) => element.id === id)
+		},
 	},
 	mutations: {
+		// Customers Actions
 		setCustomers(state, customers) {
 			state.customers = customers
 		},
@@ -36,8 +66,40 @@ export const store = createStore({
 		deleteCustomer(state, id) {
 			state.customers = state.customers.filter((element) => element.id !== id)
 		},
+
+		// Sales Actions
+		setSales(state, sales) {
+			state.sales = sales
+		},
+		setSale(state, dataSale) {
+			state.sales.push(dataSale)
+		},
+		updateSale(state, dataSale) {
+			state.sales = state.sales.map((element) => {
+				if (element.id === dataSale.id) return dataSale
+				else return element
+			})
+		},
+		deleteSale(state, id) {
+			state.sales = state.sales.filter((element) => element.id !== id)
+		},
+
+		// Stock Mutations
+		setAllStock(state, stock) {
+			state.stock = stock
+		},
+		setStock(state, dataStock) {
+			state.stock.push(dataStock)
+		},
+		updateStock(state, dataStock) {
+			state.stock = state.stock.map((element) => {
+				if (element.id === dataStock.id) return dataStock
+				else return element
+			})
+		},
 	},
 	actions: {
+		// Customers Actions
 		async setCustomers(context) {
 			const customers = await api.getCustomers()
 			context.commit('setCustomers', customers)
@@ -53,6 +115,37 @@ export const store = createStore({
 		async deleteCustomer(context, id) {
 			const { id: res } = await api.deleteCustomer(id)
 			context.commit('deleteCustomer', res)
+		},
+
+		// Sales Actions
+		async setSales(context, data) {
+			await api.setSale(data)
+		},
+		async emptySales(context) {
+			context.commit('setSales', [])
+		},
+		async setSale(context, data) {
+			context.commit('setSale', data)
+		},
+		async updateSale(context, data) {
+			context.commit('updateSale', data)
+		},
+		async deleteSale(context, id) {
+			context.commit('deleteSale', id)
+		},
+
+		// Stock Actions
+		async setAllStock(context) {
+			const stock = await api.getStock()
+			context.commit('setAllStock', stock)
+		},
+		async setStock(context, data) {
+			const res = await api.setStock(data)
+			context.commit('setStock', res)
+		},
+		async updateStock(context, data) {
+			const res = await api.updateStock(data.id, data)
+			context.commit('updateStock', res)
 		},
 	},
 })

@@ -1,31 +1,27 @@
 <template>
 	<div :class="{ content: 'content', active: isActive }">
 		<h1>Ventas</h1>
-		<FormKit
-			type="form"
-			:config="{ validationVisibility: 'submit' }"
-			sunmit-label="Crear"
-			actions-class="submit"
-			message-class="message"
-		>
+		<div class="wrappSale">
 			<div class="wrap-collabsible">
 				<input
 					id="collapsible"
 					class="toggle"
 					type="checkbox"
-					@click="setCheck1"
+					@click="toogleCheck"
 					value="user-registered"
-					v-bind="{ checked: check1 }"
+					v-bind="{ checked: check }"
 				/>
 				<label for="collapsible" class="lbl-toggle">Cliente Registrado</label>
 				<div class="collapsible-content">
 					<div class="content-inner">
-						<FormKit name="account" type="group" :disabled="!check1">
+						<FormKit name="account" type="group" :disabled="!check">
 							<FormKit
-								id="WayToPay"
+								id="customer"
 								type="select"
 								label="Cliente"
-								:options="['Roberto Miron Najera', 'Norma Najera Nunez']"
+								placeholder="Selecciona un cliente"
+								:options="customers"
+								v-model="customerSelected"
 								input-class="$reset input"
 								inner-class="$reset inner"
 							/>
@@ -38,22 +34,19 @@
 					id="collapsible"
 					class="toggle"
 					type="checkbox"
-					@click="setCheck2"
+					@click="toogleCheck"
 					value="user"
-					v-bind="{ checked: check2 }"
+					v-bind="{ checked: !check }"
 				/>
 				<label for="collapsible" class="lbl-toggle">Cliente</label>
 				<div class="collapsible-content">
 					<div class="content-inner form">
-						<FormKit name="account" type="group" :disabled="!check2">
+						<FormKit name="account" type="group" :disabled="check">
 							<FormKit
 								id="name"
 								type="text"
 								label="Nombre"
-								validation="required"
-								:validation-messages="{
-									required: 'El nombre es requerido.',
-								}"
+								v-model="customerData.name"
 								input-class="$reset input"
 								inner-class="$reset inner"
 								outer-class="name"
@@ -63,9 +56,9 @@
 								id="phone"
 								type="tel"
 								label="Telefono"
-								validation="required|matches:/^[0-9]{10}$/"
+								v-model="customerData.phone"
+								validation="matches:/^[0-9]{10}$/"
 								:validation-messages="{
-									required: 'El telefono es requerido.',
 									matches: 'El telfono debe de ser minimo 10 numeros.',
 								}"
 								input-class="$reset input"
@@ -76,9 +69,9 @@
 								id="RFC"
 								type="text"
 								label="RFC"
-								validation="required|matches:/^([A-Z,Ñ,&]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[A-Z|\d]{3})$/"
+								v-model="customerData.RFC"
+								validation="matches:/^[A-Z]$/"
 								:validation-messages="{
-									required: 'El RFC es requerido.',
 									matches: 'El formato del RFC es invalido.',
 								}"
 								input-class="$reset input"
@@ -86,9 +79,10 @@
 							/>
 
 							<FormKit
-								id="WayToPay"
+								id="wayToPay"
 								type="select"
 								label="Forma de pago"
+								v-model="customerData.wayToPay"
 								:options="['Efectivo', 'Tarjeta de credito/debito']"
 								input-class="$reset input"
 								inner-class="$reset inner"
@@ -98,10 +92,7 @@
 								id="CFDI"
 								type="text"
 								label="Uso de CFDI"
-								validation="required"
-								:validation-messages="{
-									required: 'El CFDI es requerido.',
-								}"
+								v-model="customerData.CFDI"
 								input-class="$reset input"
 								inner-class="$reset inner"
 								outer-class="name"
@@ -111,18 +102,14 @@
 				</div>
 			</div>
 			<div class="sale-data form">
-				<FormKit
-					id="search-material"
-					type="search"
-					label="Material"
-					validation="required"
-					:validation-messages="{
-						required: 'El Nombre del material es requerido.',
-					}"
-					input-class="$reset input"
-					inner-class="$reset inner"
-					outer-class="name"
-				/>
+				<div class="wrapp-search">
+					<label class="formkit-label">Material</label>
+					<search-bar
+						:dataType="'stocks'"
+						:propSearch="'description'"
+						:setData="getData"
+					/>
+				</div>
 				<FormKit
 					id="amount"
 					type="number"
@@ -130,7 +117,7 @@
 					value="1"
 					step="1"
 					min="1"
-					max="20"
+					v-model="saleData.number"
 					input-class="$reset input"
 					inner-class="$reset inner"
 				/>
@@ -138,6 +125,7 @@
 					id="price"
 					type="text"
 					label="Precio"
+					v-model="saleData.unitPrice"
 					input-class="$reset input"
 					inner-class="$reset inner"
 				/>
@@ -149,40 +137,131 @@
 					step="10"
 					min="0"
 					max="100"
-					validation="required"
+					v-model="saleData.discount"
 					input-class="$reset input"
 					inner-class="$reset inner"
 				/>
+				<FormKit type="button" label="Agregar material" @click="addMaterial" />
 			</div>
-		</FormKit>
-		<table-data :typeTable="'sales'" />
+			<FormKit type="button" label="Crear" @click="createSale" />
+		</div>
+		{{ customerSelected }}
+		<table-data :typeTable="'sale'" />
 	</div>
 </template>
 
 <script>
-import TableData from '../components//TableData.vue'
+import TableData from '../components/TableData.vue'
+import SearchBar from '../components/SearchBar.vue'
 export default {
 	components: {
 		TableData,
+		SearchBar,
 	},
-	data: () => ({
-		isActive: false,
-		check1: true,
-		check2: false,
-	}),
-
 	props: {
 		setActive: Boolean,
 	},
+	data: () => ({
+		isActive: false,
+		check: true,
+		customerSelected: '',
+		customerData: {
+			name: '',
+			phone: '',
+			RFC: '',
+			wayToPay: 'Efectivo',
+			CFDI: '',
+		},
+		saleData: {
+			id: '',
+			description: '',
+			number: '',
+			unitPrice: '',
+			discount: '0',
+		},
+	}),
+
+	computed: {
+		customers() {
+			return this.$store.getters.customersInput
+		},
+		total() {
+			let total = 0
+			this.$store.getters.sales.map((element) => {
+				total += element.amount
+			})
+			return total
+		},
+		sales() {
+			return this.$store.getters.sales
+		},
+	},
 
 	methods: {
-		setCheck1() {
-			this.check1 = !this.check1
-			this.check2 = !this.check1
+		toogleCheck() {
+			this.check = !this.check
 		},
-		setCheck2() {
-			this.check1 = !this.check1
-			this.check2 = !this.check1
+		getData(data) {
+			const dataMaterial = this.$store.getters.stock(data.id)
+			this.saleData.id = dataMaterial.id
+			this.saleData.description = dataMaterial.description
+			this.saleData.unitPrice = dataMaterial.unitPrice
+			this.saleData.number = '1'
+		},
+		addMaterial() {
+			if (this.saleData.id !== '') {
+				const amount =
+					Number(this.saleData.number) *
+					(Number(this.saleData.unitPrice) -
+						Number(this.saleData.unitPrice) *
+							(Number(this.saleData.discount) / 100))
+				this.$store.dispatch('setSale', { ...this.saleData, amount })
+				this.saleData.id = ''
+				this.saleData.description = ''
+				this.saleData.number = ''
+				this.saleData.unitPrice = ''
+				this.saleData.discount = '0'
+			}
+		},
+		emptyData() {
+			this.customerSelected = ''
+			this.customerData = {
+				name: '',
+				phone: '',
+				RFC: '',
+				wayToPay: 'Efectivo',
+				CFDI: '',
+			}
+		},
+		createSale() {
+			if (this.total > 0) {
+				const data = {}
+				data.material = this.sales
+				data.date = new Date()
+				data.total = this.total
+				if (this.check === true && this.customerSelected !== '') {
+					data.isCustomer = true
+					data.customerId = this.customerSelected
+					this.$store.dispatch('setSales', data)
+					this.$store.dispatch('emptySales')
+					this.emptyData()
+				} else {
+					const compare = {
+						name: '',
+						phone: '',
+						RFC: '',
+						wayToPay: 'Efectivo',
+						CFDI: '',
+					}
+					if (JSON.stringify(this.customerData) !== JSON.stringify(compare)) {
+						data.isCustomer = false
+						data.customerData = this.customerData
+						this.$store.dispatch('setSales', data)
+						this.$store.dispatch('emptySales')
+						this.emptyData()
+					}
+				}
+			}
 		},
 	},
 
@@ -190,6 +269,9 @@ export default {
 		setActive: function (isActive) {
 			this.isActive = isActive
 		},
+	},
+	beforeUnmount() {
+		this.$store.dispatch('emptySales')
 	},
 }
 </script>
@@ -283,5 +365,9 @@ input[type='checkbox'] {
 
 .toggle:checked + .lbl-toggle + .collapsible-content {
 	max-height: 100vh;
+}
+
+.wrapp-search {
+	width: 15rem;
 }
 </style>

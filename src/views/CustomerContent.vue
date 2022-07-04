@@ -83,7 +83,6 @@
 
 <script>
 import TableData from '../components/TableData.vue'
-import { mapActions } from 'vuex'
 
 export default {
 	components: {
@@ -104,7 +103,6 @@ export default {
 	}),
 
 	methods: {
-		...mapActions(['customer/setCustomer']),
 		createCustome: async function () {
 			await this.$store.dispatch('setCustomer', this.data)
 			this.$formkit.reset('customerForm')

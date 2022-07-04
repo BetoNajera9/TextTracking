@@ -9,8 +9,19 @@
 			</tr>
 			<tr v-for="data in content" :key="data.id">
 				<td v-for="(value, prop) in propsTable" :key="prop">
-					<span v-if="editingId !== data.id">
-						<span v-if="prop === 'unitPrice' || prop === 'amount'">$ </span>
+					<span v-if="data[prop] === true">
+						<mdicon class="ok" name="check" />
+					</span>
+					<span v-else-if="data[prop] === false">
+						<mdicon class="cancel" name="close" />
+					</span>
+					<span v-else-if="editingId !== data.id">
+						<span
+							v-if="
+								prop === 'unitPrice' || prop === 'amount' || prop === 'total'
+							"
+							>$
+						</span>
 						{{ data[prop] }}
 						<span v-if="prop === 'discount'"> %</span>
 					</span>
@@ -91,12 +102,9 @@ export default {
 			case 'history':
 				propsTable.value = {
 					id: 'Folio',
-					customerName: 'Nombre del cliente',
-					description: 'Descripcion',
-					number: 'Cantidad',
-					unitPrice: 'Precio unitario',
-					discount: 'Descuento',
-					amount: 'Importe',
+					isCustomer: 'Cliente registrado',
+					name: 'Nombre del cliente',
+					total: 'Importe',
 				}
 				break
 			case 'account':

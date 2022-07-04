@@ -145,7 +145,6 @@
 			</div>
 			<FormKit type="button" label="Crear" @click="createSale" />
 		</div>
-		{{ customerSelected }}
 		<table-data :typeTable="'sale'" />
 	</div>
 </template>
@@ -201,6 +200,9 @@ export default {
 		toogleCheck() {
 			this.check = !this.check
 		},
+		getCustomerName(id) {
+			return this.$store.getters.customer(id).name
+		},
 		getData(data) {
 			const dataMaterial = this.$store.getters.stock(data.id)
 			this.saleData.id = dataMaterial.id
@@ -235,13 +237,14 @@ export default {
 		},
 		createSale() {
 			if (this.total > 0) {
-				const data = {}
+				let data = {}
 				data.material = this.sales
 				data.date = new Date()
 				data.total = this.total
 				if (this.check === true && this.customerSelected !== '') {
 					data.isCustomer = true
 					data.customerId = this.customerSelected
+					data.name = this.getCustomerName(this.customerSelected)
 					this.$store.dispatch('setSales', data)
 					this.$store.dispatch('emptySales')
 					this.emptyData()
@@ -255,7 +258,7 @@ export default {
 					}
 					if (JSON.stringify(this.customerData) !== JSON.stringify(compare)) {
 						data.isCustomer = false
-						data.customerData = this.customerData
+						data = { ...data, ...this.customerData }
 						this.$store.dispatch('setSales', data)
 						this.$store.dispatch('emptySales')
 						this.emptyData()

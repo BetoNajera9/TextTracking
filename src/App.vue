@@ -26,6 +26,7 @@ export default {
 		onBeforeMount(() => {
 			store.dispatch('setCustomers')
 			store.dispatch('setAllStock')
+			store.dispatch('setHistory')
 		})
 
 		return {

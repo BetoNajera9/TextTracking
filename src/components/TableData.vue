@@ -9,7 +9,11 @@
 			</tr>
 			<tr v-for="data in content" :key="data.id">
 				<td v-for="(value, prop) in propsTable" :key="prop">
-					<span v-if="editingId !== data.id">{{ data[prop] }}</span>
+					<span v-if="editingId !== data.id">
+						<span v-if="prop === 'unitPrice' || prop === 'amount'">$ </span>
+						{{ data[prop] }}
+						<span v-if="prop === 'discount'"> %</span>
+					</span>
 					<input v-else type="text" v-model="dataEdit[prop]" />
 				</td>
 				<td>
@@ -44,13 +48,14 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
+import { computed, watch, ref } from 'vue'
 
 import { useStore } from '../store'
 
 export default {
 	props: {
 		typeTable: String,
+		filters: Array,
 	},
 
 	setup(props) {
@@ -65,9 +70,9 @@ export default {
 					CFDI: 'CFDI',
 				}
 				break
-			case 'sales':
+			case 'sale':
 				propsTable.value = {
-					ISBN: 'ISBN',
+					id: 'ISBN',
 					description: 'Descripcion',
 					number: 'Cantidad',
 					unitPrice: 'Precio unitario',
@@ -77,11 +82,10 @@ export default {
 				break
 			case 'stock':
 				propsTable.value = {
-					ISBN: 'ISBN',
+					id: 'ISBN',
 					description: 'Descripcion',
 					number: 'Cantidad',
 					unitPrice: 'Precio unitario',
-					amount: 'Importe',
 				}
 				break
 			case 'history':
@@ -111,11 +115,58 @@ export default {
 		const typeT =
 			props.typeTable.charAt(0).toUpperCase() + props.typeTable.slice(1)
 
-		const content = computed(() => store.getters[`${props.typeTable}s`])
+		const content = computed(() => {
+			if (props.filters) {
+				if (props.filters.length > 0) {
+					const data = store.getters[`${props.typeTable}s`]
+					return data.filter((dataElement) => {
+						for (let index = 0; index < props.filters.length; index++) {
+							if (
+								dataElement[props.filters[index].prop] ===
+								props.filters[index].value
+							)
+								return true
+						}
+						return false
+					})
+				} else return store.getters[`${props.typeTable}s`]
+			} else return store.getters[`${props.typeTable}s`]
+		})
 
 		const dataEdit = ref({})
 		const editingId = ref('')
 		const editing = ref(false)
+
+		watch(
+			() => dataEdit.value.number,
+			() => {
+				dataEdit.value.amount =
+					Number(dataEdit.value.number) *
+					(Number(dataEdit.value.unitPrice) -
+						Number(dataEdit.value.unitPrice) *
+							(Number(dataEdit.value.discount) / 100))
+			}
+		)
+		watch(
+			() => dataEdit.value.unitPrice,
+			() => {
+				dataEdit.value.amount =
+					Number(dataEdit.value.number) *
+					(Number(dataEdit.value.unitPrice) -
+						Number(dataEdit.value.unitPrice) *
+							(Number(dataEdit.value.discount) / 100))
+			}
+		)
+		watch(
+			() => dataEdit.value.discount,
+			() => {
+				dataEdit.value.amount =
+					Number(dataEdit.value.number) *
+					(Number(dataEdit.value.unitPrice) -
+						Number(dataEdit.value.unitPrice) *
+							(Number(dataEdit.value.discount) / 100))
+			}
+		)
 
 		const toogleEditing = (id) => {
 			if (editingId.value === id) {

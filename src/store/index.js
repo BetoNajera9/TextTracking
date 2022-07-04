@@ -8,6 +8,7 @@ export const store = createStore({
 		customers: [],
 		stock: [],
 		sales: [],
+		history: [],
 	}),
 	getters: {
 		// Customers Getters
@@ -36,6 +37,14 @@ export const store = createStore({
 			return (id) => state.sales.find((element) => element.id === id)
 		},
 
+		// History Getters
+		historys(state) {
+			return state.history
+		},
+		history(state) {
+			return (id) => state.history.find((element) => element.id === id)
+		},
+
 		// Stock Getters
 		stocks(state) {
 			return state.stock
@@ -50,7 +59,7 @@ export const store = createStore({
 		},
 	},
 	mutations: {
-		// Customers Actions
+		// Customers Mutation
 		setCustomers(state, customers) {
 			state.customers = customers
 		},
@@ -67,7 +76,7 @@ export const store = createStore({
 			state.customers = state.customers.filter((element) => element.id !== id)
 		},
 
-		// Sales Actions
+		// Sales Muttions
 		setSales(state, sales) {
 			state.sales = sales
 		},
@@ -82,6 +91,14 @@ export const store = createStore({
 		},
 		deleteSale(state, id) {
 			state.sales = state.sales.filter((element) => element.id !== id)
+		},
+
+		// History Mutations
+		setHistory(state, history) {
+			state.history = history
+		},
+		addToHistory(state, sale) {
+			state.history.push(sale)
 		},
 
 		// Stock Mutations
@@ -119,7 +136,8 @@ export const store = createStore({
 
 		// Sales Actions
 		async setSales(context, data) {
-			await api.setSale(data)
+			const res = await api.setSale(data)
+			context.commit('addToHistory', res)
 		},
 		async emptySales(context) {
 			context.commit('setSales', [])
@@ -132,6 +150,12 @@ export const store = createStore({
 		},
 		async deleteSale(context, id) {
 			context.commit('deleteSale', id)
+		},
+
+		// History Actions
+		async setHistory(context) {
+			const history = await api.getSales()
+			context.commit('setHistory', history)
 		},
 
 		// Stock Actions

@@ -75,6 +75,12 @@ export default class {
 		return res.data
 	}
 
+	async getSales() {
+		const response = await fetch('/api/sales', this.getConfig)
+		const res = await response.json()
+		return res.data
+	}
+
 	async setSale(data) {
 		const response = await fetch('/api/sale', {
 			...this.requestOptions,

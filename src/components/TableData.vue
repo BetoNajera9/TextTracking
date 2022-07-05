@@ -25,7 +25,12 @@
 						{{ data[prop] }}
 						<span v-if="prop === 'discount'"> %</span>
 					</span>
-					<input v-else type="text" v-model="dataEdit[prop]" />
+					<input
+						v-else
+						type="text"
+						v-model="dataEdit[prop]"
+						:disabled="prop === 'amount' || prop === 'total' ? true : false"
+					/>
 				</td>
 				<td>
 					<mdicon

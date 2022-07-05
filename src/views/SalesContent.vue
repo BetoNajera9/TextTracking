@@ -102,11 +102,11 @@
 				</div>
 			</div>
 			<div class="sale-data form">
-				<div class="wrapp-search">
+				<div class="wrap-search">
 					<label class="formkit-label">Material</label>
 					<search-bar
-						:dataType="'stocks'"
 						:propSearch="'description'"
+						:dataType="'stocks'"
 						:setData="getData"
 					/>
 				</div>
@@ -117,6 +117,7 @@
 					value="1"
 					step="1"
 					min="1"
+					:max="max"
 					v-model="saleData.number"
 					input-class="$reset input"
 					inner-class="$reset inner"
@@ -141,8 +142,14 @@
 					input-class="$reset input"
 					inner-class="$reset inner"
 				/>
-				<FormKit type="button" label="Agregar material" @click="addMaterial" />
+				<FormKit
+					type="button"
+					label="Agregar material"
+					@click="addMaterial"
+					:disabled="max > 0 ? false : true"
+				/>
 			</div>
+			<label class="error-label">{{ errorMenssage }}</label>
 			<FormKit type="button" label="Crear" @click="createSale" />
 		</div>
 		<table-data :typeTable="'sale'" />
@@ -157,13 +164,11 @@ export default {
 		TableData,
 		SearchBar,
 	},
-	props: {
-		setActive: Boolean,
-	},
 	data: () => ({
-		isActive: false,
 		check: true,
 		customerSelected: '',
+		errorMenssage: '',
+		max: 0,
 		customerData: {
 			name: '',
 			phone: '',
@@ -181,6 +186,9 @@ export default {
 	}),
 
 	computed: {
+		isActive() {
+			return this.$store.getters.isActive
+		},
 		customers() {
 			return this.$store.getters.customersInput
 		},
@@ -205,13 +213,20 @@ export default {
 		},
 		getData(data) {
 			const dataMaterial = this.$store.getters.stock(data.id)
-			this.saleData.id = dataMaterial.id
-			this.saleData.description = dataMaterial.description
-			this.saleData.unitPrice = dataMaterial.unitPrice
-			this.saleData.number = '1'
+			if (dataMaterial.number > 0) {
+				if (dataMaterial.number < 10)
+					this.errorMenssage = `Solo queda ${dataMaterial.number} existencia`
+				else this.errorMenssage = ''
+
+				this.max = Number(dataMaterial.number)
+				this.saleData.id = dataMaterial.id
+				this.saleData.description = dataMaterial.description
+				this.saleData.unitPrice = dataMaterial.unitPrice
+				this.saleData.number = '1'
+			} else this.errorMenssage = 'No hay libros en existencia'
 		},
 		addMaterial() {
-			if (this.saleData.id !== '') {
+			if (this.saleData.number <= this.max) {
 				const amount =
 					Number(this.saleData.number) *
 					(Number(this.saleData.unitPrice) -
@@ -223,6 +238,8 @@ export default {
 				this.saleData.number = ''
 				this.saleData.unitPrice = ''
 				this.saleData.discount = '0'
+				this.errorMenssage = ''
+				this.max = 0
 			}
 		},
 		emptyData() {
@@ -268,11 +285,6 @@ export default {
 		},
 	},
 
-	watch: {
-		setActive: function (isActive) {
-			this.isActive = isActive
-		},
-	},
 	beforeUnmount() {
 		this.$store.dispatch('emptySales')
 	},
@@ -370,7 +382,11 @@ input[type='checkbox'] {
 	max-height: 100vh;
 }
 
-.wrapp-search {
+.wrap-search {
 	width: 15rem;
+}
+
+.error-label {
+	color: red;
 }
 </style>

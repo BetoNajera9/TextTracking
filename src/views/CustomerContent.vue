@@ -88,11 +88,7 @@ export default {
 	components: {
 		TableData,
 	},
-	props: {
-		setActive: Boolean,
-	},
 	data: () => ({
-		isActive: false,
 		data: {
 			name: '',
 			phone: '',
@@ -109,9 +105,9 @@ export default {
 		},
 	},
 
-	watch: {
-		setActive: function (isActive) {
-			this.isActive = isActive
+	computed: {
+		isActive() {
+			return this.$store.getters.isActive
 		},
 	},
 }

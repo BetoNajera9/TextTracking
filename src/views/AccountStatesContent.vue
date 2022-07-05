@@ -46,17 +46,11 @@ export default {
 	components: {
 		TableData,
 	},
-	data: () => ({
-		isActive: false,
-	}),
+	data: () => ({}),
 
-	props: {
-		setActive: Boolean,
-	},
-
-	watch: {
-		setActive: function (isActive) {
-			this.isActive = isActive
+	computed: {
+		isActive() {
+			return this.$store.getters.isActive
 		},
 	},
 }

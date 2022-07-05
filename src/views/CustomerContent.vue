@@ -44,9 +44,8 @@
 				type="text"
 				label="RFC"
 				v-model="data.RFC"
-				validation="required|matches:/^[A-Z]+$/"
+				validation="matches:/^[A-Z]+$/"
 				:validation-messages="{
-					required: 'El RFC es requerido.',
 					matches: 'El formato del RFC es invalido.',
 				}"
 				input-class="$reset input"
@@ -58,7 +57,7 @@
 				type="select"
 				label="Forma de pago"
 				v-model="data.wayToPay"
-				:options="['Efectivo', 'Tarjeta de credito/debito']"
+				:options="['EFECTIVO', 'TARJETA DE CREDITO/DEBITO']"
 				input-class="$reset input"
 				inner-class="$reset inner"
 			/>
@@ -68,10 +67,6 @@
 				type="text"
 				label="Uso de CFDI"
 				v-model="data.CFDI"
-				validation="required"
-				:validation-messages="{
-					required: 'El CFDI es requerido.',
-				}"
 				input-class="$reset input"
 				inner-class="$reset inner"
 				outer-class="name"
@@ -93,10 +88,22 @@ export default {
 			name: '',
 			phone: '',
 			RFC: '',
-			wayToPay: 'Efectivo',
+			wayToPay: 'EFECTIVO',
 			CFDI: '',
 		},
 	}),
+
+	watch: {
+		'data.name'() {
+			this.data.name = this.data.name.toUpperCase()
+		},
+		'data.RFC'() {
+			this.data.RFC = this.data.RFC.toUpperCase()
+		},
+		'data.CFDI'() {
+			this.data.CFDI = this.data.CFDI.toUpperCase()
+		},
+	},
 
 	methods: {
 		createCustome: async function () {

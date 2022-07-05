@@ -83,7 +83,7 @@
 								type="select"
 								label="Forma de pago"
 								v-model="customerData.wayToPay"
-								:options="['Efectivo', 'Tarjeta de credito/debito']"
+								:options="['EFECTO', 'TARJETA DE CREDITO/DEBITO']"
 								input-class="$reset input"
 								inner-class="$reset inner"
 							/>
@@ -119,14 +119,26 @@
 					min="1"
 					:max="max"
 					v-model="saleData.number"
+					validation="required|matches:/^[0-9]+$/"
+					:validation-messages="{
+						required: 'Ingresar cantidad',
+						matches: 'Ingesar cantidad valida',
+					}"
 					input-class="$reset input"
 					inner-class="$reset inner"
 				/>
 				<FormKit
 					id="price"
-					type="text"
+					type="number"
 					label="Precio"
+					step="10"
+					min="0"
 					v-model="saleData.unitPrice"
+					validation="required|matches:/^[0-9]+$/"
+					:validation-messages="{
+						required: 'Ingresar precio del producto',
+						matches: 'Ingesar cantidad valida',
+					}"
 					input-class="$reset input"
 					inner-class="$reset inner"
 				/>
@@ -139,6 +151,11 @@
 					min="0"
 					max="100"
 					v-model="saleData.discount"
+					validation="required|matches:/^[0-9]+$/"
+					:validation-messages="{
+						required: 'Ingresar descuento',
+						matches: 'Ingesar descuento valida',
+					}"
 					input-class="$reset input"
 					inner-class="$reset inner"
 				/>
@@ -173,17 +190,38 @@ export default {
 			name: '',
 			phone: '',
 			RFC: '',
-			wayToPay: 'Efectivo',
+			wayToPay: 'EFECTIVO',
 			CFDI: '',
 		},
 		saleData: {
 			id: '',
 			description: '',
-			number: '',
-			unitPrice: '',
-			discount: '0',
+			number: 0,
+			unitPrice: 0,
+			discount: 0,
 		},
 	}),
+
+	watch: {
+		'customerData.name'() {
+			this.customerData.name = this.customerData.name.toUpperCase()
+		},
+		'customerData.RFC'() {
+			this.customerData.RFC = this.customerData.RFC.toUpperCase()
+		},
+		'customerData.CFDI'() {
+			this.customerData.CFDI = this.customerData.CFDI.toUpperCase()
+		},
+		'saleData.number'() {
+			this.saleData.number = Number(this.saleData.number)
+		},
+		'saleData.unitPrice'() {
+			this.saleData.unitPrice = Number(this.saleData.unitPrice)
+		},
+		'saleData.discount'() {
+			this.saleData.discount = Number(this.saleData.discount)
+		},
+	},
 
 	computed: {
 		isActive() {
@@ -266,14 +304,7 @@ export default {
 					this.$store.dispatch('emptySales')
 					this.emptyData()
 				} else {
-					const compare = {
-						name: '',
-						phone: '',
-						RFC: '',
-						wayToPay: 'Efectivo',
-						CFDI: '',
-					}
-					if (JSON.stringify(this.customerData) !== JSON.stringify(compare)) {
+					if (this.customerData.name !== '' && this.customerData.phone !== '') {
 						data.isCustomer = false
 						data = { ...data, ...this.customerData }
 						this.$store.dispatch('setSales', data)

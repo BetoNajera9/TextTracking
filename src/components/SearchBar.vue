@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useStore } from '../store'
 export default {
 	props: {
@@ -61,6 +61,10 @@ export default {
 			searchInput.value = data.name
 			props.setData(data)
 		}
+
+		watch(searchInput, () => {
+			searchInput.value = searchInput.value.toUpperCase()
+		})
 
 		return {
 			toogleFocusSearch,

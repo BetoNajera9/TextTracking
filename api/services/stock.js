@@ -1,3 +1,4 @@
+import { v4 } from 'uuid'
 import Stocks from '../controllers/stock'
 
 const stocks = new Stocks()
@@ -5,6 +6,7 @@ const stocks = new Stocks()
 const createStock = async (req, res) => {
 	try {
 		const newStock = {
+			id: v4(),
 			...req.body,
 		}
 

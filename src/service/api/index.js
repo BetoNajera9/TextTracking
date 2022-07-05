@@ -75,6 +75,15 @@ export default class {
 		return res.data
 	}
 
+	async deleteStock(id) {
+		const response = await fetch(`/api/stock/${id}`, {
+			...this.requestOptions,
+			method: 'DELETE',
+		})
+		const res = await response.json()
+		return res.data
+	}
+
 	async getSales() {
 		const response = await fetch('/api/sales', this.getConfig)
 		const res = await response.json()

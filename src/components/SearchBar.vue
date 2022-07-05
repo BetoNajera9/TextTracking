@@ -15,7 +15,7 @@
 				class="searched-option"
 				v-for="element in searchedList()"
 				:key="element.id"
-				@click="setData({ id: element.id, name: element[propSearch] })"
+				@click="setSearchedData({ id: element.id, name: element[propSearch] })"
 			>
 				<span>{{ element[propSearch] }}</span>
 			</div>
@@ -31,6 +31,7 @@ export default {
 		dataType: String,
 		propSearch: String,
 		setData: Function,
+		hold: Boolean,
 	},
 	setup(props) {
 		const store = useStore()
@@ -49,25 +50,37 @@ export default {
 			if (input === false) {
 				setTimeout(function () {
 					focusSearch.value = input
-					searchInput.value = ''
 				}, 200)
-			} else focusSearch.value = input
+			} else {
+				searchInput.value = ''
+				focusSearch.value = input
+			}
+		}
+
+		const setSearchedData = (data) => {
+			searchInput.value = data.name
+			props.setData(data)
 		}
 
 		return {
+			toogleFocusSearch,
+			setSearchedData,
 			searchedList,
+			focusSearch,
 			searchInput,
 			data,
-			focusSearch,
-			toogleFocusSearch,
 		}
 	},
 }
 </script>
 
 <style scoped>
+.wrapper {
+	width: 15rem;
+}
 .wrapper-options {
-	background: black;
+	width: 15rem;
+	background: #2c3e50;
 	color: white;
 	position: absolute;
 	z-index: 1;

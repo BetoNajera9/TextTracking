@@ -18,17 +18,20 @@ router.post('/sale', sale.createSale)
 router.get('/sales', sale.getAllSales)
 router.get('/sale', sale.getSale)
 router.put('/sale/:id', sale.updateSale)
+router.delete('/sale/:id', sale.deleteSale)
 
 // Stock enpoints
 router.post('/stock', stock.createStock)
 router.get('/stocks', stock.getAllStocks)
 router.get('/stock', stock.getStock)
 router.put('/stock/:id', stock.updateStock)
+router.delete('/stock/:id', stock.deleteStock)
 
 // Account statements enpoints
 router.post('/accountStatement', accontStatements.createAccountStatement)
 router.get('/accountStatements', accontStatements.getAllAccountStatements)
 router.get('/accountStatement', accontStatements.getAccountStatement)
 router.put('/accountStatement/:id', accontStatements.updateAccountStatement)
+router.delete('/accountStatement/:id', accontStatements.deleteAccountStatement)
 
 export default router

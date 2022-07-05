@@ -56,9 +56,23 @@ const updateSale = async (req, res) => {
 	}
 }
 
+const deleteSale = async (req, res) => {
+	try {
+		const deleteData = { id: req.params.id }
+
+		const data = sales.deleteSale(deleteData)
+
+		res.json({ succes: true, data })
+	} catch (error) {
+		console.log(error)
+		res.status(500).send(error)
+	}
+}
+
 export default {
 	createSale,
 	getAllSales,
 	getSale,
 	updateSale,
+	deleteSale,
 }

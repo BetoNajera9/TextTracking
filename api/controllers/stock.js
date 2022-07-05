@@ -24,4 +24,9 @@ export default class Stocks {
 		this.db.get(this.collection).find(findData).assign(newData).write()
 		return newData
 	}
+
+	deleteStock(data) {
+		this.db.get(this.collection).remove(data).write()
+		return data
+	}
 }

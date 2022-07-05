@@ -24,4 +24,9 @@ export default class AccountStatements {
 		this.db.get(this.collection).find(findData).assign(newData).write()
 		return newData
 	}
+
+	deleteAccountStatement(data) {
+		this.db.get(this.collection).remove(data).write()
+		return data
+	}
 }

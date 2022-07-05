@@ -54,9 +54,23 @@ const updateStock = async (req, res) => {
 	}
 }
 
+const deleteStock = async (req, res) => {
+	try {
+		const deleteData = { id: req.params.id }
+
+		const data = stocks.deleteStock(deleteData)
+
+		res.json({ succes: true, data })
+	} catch (error) {
+		console.log(error)
+		res.status(500).send(error)
+	}
+}
+
 export default {
 	createStock,
 	getAllStocks,
 	getStock,
 	updateStock,
+	deleteStock,
 }

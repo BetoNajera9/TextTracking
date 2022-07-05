@@ -24,4 +24,9 @@ export default class Sales {
 		this.db.get(this.collection).find(findData).assign(newData).write()
 		return newData
 	}
+
+	deleteSale(data) {
+		this.db.get(this.collection).remove(data).write()
+		return data
+	}
 }

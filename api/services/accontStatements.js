@@ -59,9 +59,23 @@ const updateAccountStatement = async (req, res) => {
 	}
 }
 
+const deleteAccountStatement = async (req, res) => {
+	try {
+		const deleteData = { id: req.params.id }
+
+		const data = accountStatements.deleteAccountStatement(deleteData)
+
+		res.json({ succes: true, data })
+	} catch (error) {
+		console.log(error)
+		res.status(500).send(error)
+	}
+}
+
 export default {
 	createAccountStatement,
 	getAllAccountStatements,
 	getAccountStatement,
 	updateAccountStatement,
+	deleteAccountStatement,
 }

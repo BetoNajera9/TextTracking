@@ -54,19 +54,25 @@
 </template>
 
 <script>
-export default {
-	data: () => ({
-		isActive: false,
-	}),
+import { computed } from 'vue'
+import { useStore } from '../store'
 
-	props: {
-		getActive: Function,
-	},
-	methods: {
-		setActive() {
-			this.isActive = !this.isActive
-			this.getActive()
-		},
+export default {
+	setup() {
+		const store = useStore()
+
+		const isActive = computed(() => {
+			return store.getters.isActive
+		})
+
+		const setActive = () => {
+			store.dispatch('toogleActive')
+		}
+
+		return {
+			isActive,
+			setActive,
+		}
 	},
 }
 </script>

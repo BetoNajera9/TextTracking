@@ -98,7 +98,7 @@ export default {
 				break
 			case 'stock':
 				propsTable.value = {
-					id: 'ISBN',
+					ISBN: 'ISBN',
 					description: 'Descripcion',
 					number: 'Cantidad',
 					unitPrice: 'Precio unitario',
@@ -153,6 +153,7 @@ export default {
 		watch(
 			() => dataEdit.value.number,
 			() => {
+				dataEdit.value.number = Number(dataEdit.value.number)
 				dataEdit.value.amount =
 					Number(dataEdit.value.number) *
 					(Number(dataEdit.value.unitPrice) -
@@ -163,6 +164,7 @@ export default {
 		watch(
 			() => dataEdit.value.unitPrice,
 			() => {
+				dataEdit.value.intPrice = Number(dataEdit.value.intPrice)
 				dataEdit.value.amount =
 					Number(dataEdit.value.number) *
 					(Number(dataEdit.value.unitPrice) -
@@ -173,6 +175,7 @@ export default {
 		watch(
 			() => dataEdit.value.discount,
 			() => {
+				dataEdit.value.discount = Number(dataEdit.value.discount)
 				dataEdit.value.amount =
 					Number(dataEdit.value.number) *
 					(Number(dataEdit.value.unitPrice) -

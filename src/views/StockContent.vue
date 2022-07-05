@@ -15,11 +15,7 @@
 				id="ISBN"
 				type="text"
 				label="ISBN"
-				v-model="data.id"
-				validation="required"
-				:validation-messages="{
-					required: 'El ISBN es requerido.',
-				}"
+				v-model="data.ISBN"
 				input-class="$reset input"
 				inner-class="$reset inner"
 				outer-class="description"
@@ -31,7 +27,7 @@
 				v-model="data.description"
 				validation="required"
 				:validation-messages="{
-					required: 'La descripcion es requerido.',
+					required: 'La descripcion es requerida.',
 				}"
 				input-class="$reset input"
 				inner-class="$reset inner"
@@ -44,7 +40,7 @@
 				v-model="data.number"
 				validation="required"
 				:validation-messages="{
-					required: 'La cantidad es requerido.',
+					required: 'La cantidad es requerida.',
 				}"
 				input-class="$reset input"
 				inner-class="$reset inner"
@@ -70,7 +66,7 @@
 				<label class="formkit-label">ISBN</label>
 				<search-bar
 					:dataType="'stocks'"
-					:propSearch="'id'"
+					:propSearch="'ISBN'"
 					:setData="getDataById"
 				/>
 			</div>
@@ -111,12 +107,23 @@ export default {
 	data: () => ({
 		filters: [],
 		data: {
-			id: '',
+			ISBN: '',
 			description: '',
 			number: 0,
 			unitPrice: 0,
 		},
 	}),
+	watch: {
+		'data.description'() {
+			this.data.description = this.data.description.toUpperCase()
+		},
+		'data.number'() {
+			this.data.number = Number(this.data.number)
+		},
+		'data.unitPrice'() {
+			this.data.unitPrice = Number(this.data.unitPrice)
+		},
+	},
 	methods: {
 		addToStock: async function () {
 			await this.$store.dispatch('setStock', this.data)
@@ -124,9 +131,9 @@ export default {
 		},
 		getDataById(data) {
 			this.filters.push({
-				value: data.id,
-				prop: 'id',
-				label: `ISBN:${data.id}`,
+				value: data.name,
+				prop: 'ISBN',
+				label: `ISBN:${data.name}`,
 			})
 		},
 		getDataByName(data) {

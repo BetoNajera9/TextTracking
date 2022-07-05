@@ -66,7 +66,7 @@
 		</FormKit>
 
 		<div class="form">
-			<div class="wrapp-search">
+			<div class="wrap-search">
 				<label class="formkit-label">ISBN</label>
 				<search-bar
 					:dataType="'stocks'"
@@ -75,7 +75,7 @@
 				/>
 			</div>
 
-			<div class="wrapp-search">
+			<div class="wrap-search">
 				<label class="formkit-label">Material</label>
 				<search-bar
 					:dataType="'stocks'"
@@ -84,14 +84,16 @@
 				/>
 			</div>
 		</div>
-		<div class="filter-list" v-for="filter in filters" :key="filter.label">
-			<span class="filter">{{ filter.label }}</span>
-			<mdicon
-				class="close-filter"
-				name="close"
-				id="btn-close"
-				@click="removeFilter(filter.label)"
-			/>
+		<div class="filter-wrap">
+			<div class="filter-list" v-for="filter in filters" :key="filter.label">
+				<span class="filter">{{ filter.label }}</span>
+				<mdicon
+					class="close-filter"
+					name="close"
+					id="btn-close"
+					@click="removeFilter(filter.label)"
+				/>
+			</div>
 		</div>
 		<table-data :typeTable="'stock'" :filters="filters" />
 	</div>
@@ -107,7 +109,6 @@ export default {
 		SearchBar,
 	},
 	data: () => ({
-		isActive: false,
 		filters: [],
 		data: {
 			id: '',
@@ -116,11 +117,6 @@ export default {
 			unitPrice: 0,
 		},
 	}),
-
-	props: {
-		setActive: Boolean,
-	},
-
 	methods: {
 		addToStock: async function () {
 			await this.$store.dispatch('setStock', this.data)
@@ -137,7 +133,7 @@ export default {
 			this.filters.push({
 				value: data.name,
 				prop: 'description',
-				label: `Name:${data.name}`,
+				label: `Nombre:${data.name}`,
 			})
 		},
 		removeFilter(filter) {
@@ -147,10 +143,9 @@ export default {
 			})
 		},
 	},
-
-	watch: {
-		setActive: function (isActive) {
-			this.isActive = isActive
+	computed: {
+		isActive() {
+			return this.$store.getters.isActive
 		},
 	},
 }

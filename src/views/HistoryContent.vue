@@ -2,7 +2,7 @@
 	<div :class="{ content: 'content', active: isActive }">
 		<h1>Historial</h1>
 		<div class="form">
-			<div class="wrapp-search">
+			<div class="wrap-search">
 				<label class="formkit-label">Nombre del cliente</label>
 				<search-bar
 					:dataType="'historys'"
@@ -10,7 +10,7 @@
 					:setData="getDataByName"
 				/>
 			</div>
-			<div class="wrapp-search">
+			<div class="wrap-search">
 				<label class="formkit-label">Folio</label>
 				<search-bar
 					:dataType="'historys'"
@@ -19,14 +19,18 @@
 				/>
 			</div>
 		</div>
-		<div class="filter-list" v-for="filter in filters" :key="filter.label">
-			<span class="filter">{{ filter.label }}</span>
-			<mdicon
-				class="close-filter"
-				name="close"
-				id="btn-close"
-				@click="removeFilter(filter.label)"
-			/>
+		<div class="filter-wrap">
+			<div class="filter-list" v-for="filter in filters" :key="filter.label">
+				<span class="filter"
+					>{{ filter.label
+					}}<mdicon
+						class="close-filter"
+						name="close"
+						id="btn-close"
+						@click="removeFilter(filter.label)"
+						size="17"
+				/></span>
+			</div>
 		</div>
 		<table-data :typeTable="'history'" :filters="filters" />
 	</div>
@@ -42,13 +46,9 @@ export default {
 		SearchBar,
 	},
 	data: () => ({
-		isActive: false,
 		filters: [],
 	}),
 
-	props: {
-		setActive: Boolean,
-	},
 	methods: {
 		getDataById(data) {
 			this.filters.push({
@@ -72,9 +72,9 @@ export default {
 		},
 	},
 
-	watch: {
-		setActive: function (isActive) {
-			this.isActive = isActive
+	computed: {
+		isActive() {
+			return this.$store.getters.isActive
 		},
 	},
 }
@@ -140,5 +140,18 @@ export default {
 .formkit-outer.CFDI {
 	width: 250px;
 	border: 0 !important;
+}
+
+.filter-list {
+	margin: 2px;
+	padding: 2px;
+	background: #2c3e50b6;
+	color: white;
+	border-radius: 20px;
+}
+
+.filter-wrap {
+	display: flex;
+	flex-wrap: wrap;
 }
 </style>

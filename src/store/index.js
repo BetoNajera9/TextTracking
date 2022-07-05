@@ -5,12 +5,17 @@ const api = new Api()
 
 export const store = createStore({
 	state: () => ({
+		isActive: false,
 		customers: [],
 		stock: [],
 		sales: [],
 		history: [],
 	}),
 	getters: {
+		isActive(state) {
+			return state.isActive
+		},
+
 		// Customers Getters
 		customers(state) {
 			return state.customers
@@ -59,6 +64,10 @@ export const store = createStore({
 		},
 	},
 	mutations: {
+		toogleActive(state) {
+			state.isActive = !state.isActive
+		},
+
 		// Customers Mutation
 		setCustomers(state, customers) {
 			state.customers = customers
@@ -100,6 +109,15 @@ export const store = createStore({
 		addToHistory(state, sale) {
 			state.history.push(sale)
 		},
+		updateHistory(state, dataHistory) {
+			state.history = state.history.map((element) => {
+				if (element.id === dataHistory.id) return dataHistory
+				else return element
+			})
+		},
+		deleteHistory(state, id) {
+			state.history = state.history.filter((element) => element.id !== id)
+		},
 
 		// Stock Mutations
 		setAllStock(state, stock) {
@@ -114,8 +132,15 @@ export const store = createStore({
 				else return element
 			})
 		},
+		deleteStock(state, id) {
+			state.stock = state.stock.filter((element) => element.id !== id)
+		},
 	},
 	actions: {
+		toogleActive(context) {
+			context.commit('toogleActive')
+		},
+
 		// Customers Actions
 		async setCustomers(context) {
 			const customers = await api.getCustomers()
@@ -138,6 +163,12 @@ export const store = createStore({
 		async setSales(context, data) {
 			const res = await api.setSale(data)
 			context.commit('addToHistory', res)
+
+			data.material.map((element) => {
+				const stock = context.getters.stock(element.id)
+				stock.number = Number(stock.number) - Number(element.number)
+				context.dispatch('updateStock', stock)
+			})
 		},
 		async emptySales(context) {
 			context.commit('setSales', [])
@@ -157,6 +188,14 @@ export const store = createStore({
 			const history = await api.getSales()
 			context.commit('setHistory', history)
 		},
+		async updateHistory(context, data) {
+			const res = await api.updateSale(data.id, data)
+			context.commit('updateHistory', res)
+		},
+		async deleteHistory(context, id) {
+			const { id: res } = await api.deleteSale(id)
+			context.commit('deleteHistory', res)
+		},
 
 		// Stock Actions
 		async setAllStock(context) {
@@ -170,6 +209,10 @@ export const store = createStore({
 		async updateStock(context, data) {
 			const res = await api.updateStock(data.id, data)
 			context.commit('updateStock', res)
+		},
+		async deleteStock(context, id) {
+			const { id: res } = await api.deleteStock(id)
+			context.commit('deleteStock', res)
 		},
 	},
 })

@@ -112,7 +112,37 @@ export default class {
 
 	async getAccountStatements() {
 		const response = await fetch('/api/accountStatements', this.getConfig)
-		const data = await response.json()
+		const { data } = await response.json()
 		return data
+	}
+
+	async setAccountStatements(data) {
+		const response = await fetch('/api/accountStatement', {
+			...this.requestOptions,
+			body: JSON.stringify(data),
+			method: 'POST',
+		})
+		const res = await response.json()
+		return res.data
+	}
+
+	async updateAccountStatements(id, data) {
+		const response = await fetch(`/api/accountStatement/${id}`, {
+			...this.requestOptions,
+			body: JSON.stringify(data),
+			method: 'PUT',
+		})
+		const res = await response.json()
+		return res.data
+	}
+
+	async addMovementToAccount(id, data) {
+		const response = await fetch(`/api/accountStatement/addMovement/${id}`, {
+			...this.requestOptions,
+			body: JSON.stringify(data),
+			method: 'POST',
+		})
+		const res = await response.json()
+		return res.data
 	}
 }

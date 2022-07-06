@@ -10,6 +10,7 @@ export const store = createStore({
 		stock: [],
 		sales: [],
 		history: [],
+		accountStatements: [],
 	}),
 	getters: {
 		isActive(state) {
@@ -61,6 +62,21 @@ export const store = createStore({
 		},
 		stock(state) {
 			return (id) => state.stock.find((element) => element.id === id)
+		},
+
+		//AccountStatement Getters
+		account(state) {
+			return (id) =>
+				state.accountStatements.find((element) => element.id === id)
+		},
+		accountMovement(state) {
+			return (userId, movementId) => {
+				const account = state.accountStatements.find(
+					(element) => element.id === userId
+				)
+				console.log(account)
+				return account.movements.find((element) => element.id === movementId)
+			}
 		},
 	},
 	mutations: {
@@ -135,6 +151,29 @@ export const store = createStore({
 		deleteStock(state, id) {
 			state.stock = state.stock.filter((element) => element.id !== id)
 		},
+
+		// AccountStatements Mutations
+		setAccountStatements(state, AccountStatements) {
+			state.accountStatements = AccountStatements
+		},
+		setAccountStatement(state, AccountStatement) {
+			state.accountStatements.push(AccountStatement)
+		},
+		updateAccountStatements(state, AccountStatement) {
+			state.accountStatements = state.accountStatements.map((element) => {
+				if (element.id === AccountStatement.id) return AccountStatement
+				else return element
+			})
+		},
+		addMovementToAccount(state, movement) {
+			state.accountStatements = state.accountStatements.map((element) => {
+				if (element.id === movement.id) {
+					element.movements.push(movement.data)
+					element.total += movement.data.total
+					return element
+				} else return element
+			})
+		},
 	},
 	actions: {
 		toogleActive(context) {
@@ -149,6 +188,7 @@ export const store = createStore({
 		async setCustomer(context, data) {
 			const res = await api.setCustomer(data)
 			context.commit('setCustomer', res)
+			return res
 		},
 		async updateCustomer(context, data) {
 			const res = await api.updateCustomer(data.id, data)
@@ -169,6 +209,7 @@ export const store = createStore({
 				stock.number = Number(stock.number) - Number(element.number)
 				context.dispatch('updateStock', stock)
 			})
+			return res
 		},
 		async emptySales(context) {
 			context.commit('setSales', [])
@@ -213,6 +254,24 @@ export const store = createStore({
 		async deleteStock(context, id) {
 			const { id: res } = await api.deleteStock(id)
 			context.commit('deleteStock', res)
+		},
+
+		// Account statements Actions
+		async setAccountStatements(context) {
+			const accounts = await api.getAccountStatements()
+			context.commit('setAccountStatements', accounts)
+		},
+		async setAccountStatement(context, data) {
+			const res = await api.setAccountStatements(data)
+			context.commit('setAccountStatements', res)
+		},
+		async updateAccountStatements(context, data) {
+			const res = await api.updateAccountStatements(data.id, data)
+			context.commit('updateAccountStatements', res)
+		},
+		async addMovementToAccount(context, movement) {
+			const res = await api.addMovementToAccount(movement.id, movement.data)
+			context.commit('addMovementToAccount', { id: movement.id, data: res })
 		},
 	},
 })

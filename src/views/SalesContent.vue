@@ -290,7 +290,7 @@ export default {
 				CFDI: '',
 			}
 		},
-		createSale() {
+		async createSale() {
 			if (this.total > 0) {
 				let data = {}
 				data.material = this.sales
@@ -300,7 +300,18 @@ export default {
 					data.isCustomer = true
 					data.customerId = this.customerSelected
 					data.name = this.getCustomerName(this.customerSelected)
-					this.$store.dispatch('setSales', data)
+					const res = await this.$store.dispatch('setSales', data)
+					delete data.isCustomer
+					delete data.customerId
+					delete data.name
+					data.id = res.id
+					this.$store.dispatch('addMovementToAccount', {
+						id: this.customerSelected,
+						data: {
+							movement: 'charge',
+							...data,
+						},
+					})
 					this.$store.dispatch('emptySales')
 					this.emptyData()
 				} else {

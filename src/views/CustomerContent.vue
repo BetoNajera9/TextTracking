@@ -107,8 +107,14 @@ export default {
 
 	methods: {
 		createCustome: async function () {
-			await this.$store.dispatch('setCustomer', this.data)
-			this.$formkit.reset('customerForm')
+			const account = {}
+			const data = await this.$store.dispatch('setCustomer', this.data)
+			account.id = data.id
+			account.name = data.name
+			account.movements = []
+			account.total = 0
+			await this.$store.dispatch('setAccountStatement', account)
+			// this.$formkit.reset('customerForm')
 		},
 	},
 

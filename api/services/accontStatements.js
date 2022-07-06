@@ -1,4 +1,3 @@
-import { v4 } from 'uuid'
 import AccountStatements from '../controllers/accountStatements'
 
 const accountStatements = new AccountStatements()
@@ -6,7 +5,6 @@ const accountStatements = new AccountStatements()
 const createAccountStatement = async (req, res) => {
 	try {
 		const newAccountStatement = {
-			id: v4(),
 			...req.body,
 		}
 
@@ -72,10 +70,28 @@ const deleteAccountStatement = async (req, res) => {
 	}
 }
 
+const addSalesToAccount = async (req, res) => {
+	try {
+		const findData = { id: req.params.id }
+		const accountStatementData = req.body
+
+		const data = accountStatements.addSalesToAccount(
+			findData,
+			accountStatementData
+		)
+
+		res.json({ succes: true, data })
+	} catch (error) {
+		console.log(error)
+		res.status(500).send(error)
+	}
+}
+
 export default {
 	createAccountStatement,
 	getAllAccountStatements,
 	getAccountStatement,
 	updateAccountStatement,
 	deleteAccountStatement,
+	addSalesToAccount,
 }

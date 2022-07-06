@@ -15,7 +15,7 @@ export default class DB {
 				customers: [],
 				sales: [],
 				stock: [],
-				'account-statements': [],
+				accountStatements: [],
 			})
 			.write()
 	}

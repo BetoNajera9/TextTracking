@@ -33,5 +33,9 @@ router.get('/accountStatements', accontStatements.getAllAccountStatements)
 router.get('/accountStatement', accontStatements.getAccountStatement)
 router.put('/accountStatement/:id', accontStatements.updateAccountStatement)
 router.delete('/accountStatement/:id', accontStatements.deleteAccountStatement)
+router.post(
+	'/accountStatement/addMovement/:id',
+	accontStatements.addSalesToAccount
+)
 
 export default router

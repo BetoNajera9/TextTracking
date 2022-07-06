@@ -27,6 +27,7 @@ export default {
 			store.dispatch('setCustomers')
 			store.dispatch('setAllStock')
 			store.dispatch('setHistory')
+			store.dispatch('setAccountStatements')
 		})
 
 		return {

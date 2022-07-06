@@ -15,6 +15,12 @@
 					<span v-else-if="data[prop] === false">
 						<mdicon class="cancel" name="close" />
 					</span>
+					<span v-else-if="prop === 'date'">
+						{{ setDate(data[prop]) }}
+					</span>
+					<span v-else-if="prop === 'id'">
+						{{ data[prop] }}
+					</span>
 					<span v-else-if="editingId !== data.id">
 						<span
 							v-if="
@@ -29,7 +35,7 @@
 						v-else
 						type="text"
 						v-model="dataEdit[prop]"
-						:disabled="prop === 'amount' || prop === 'total' ? true : false"
+						:disabled="prop === 'amount' || data.total > 0 ? true : false"
 					/>
 				</td>
 				<td>
@@ -115,11 +121,8 @@ export default {
 			case 'account':
 				propsTable.value = {
 					id: 'Folio',
-					description: 'Descripcion',
-					number: 'Cantidad',
-					unitPrice: 'Precio unitario',
-					discount: 'Descuento',
-					amount: 'Importe',
+					date: 'Fecha',
+					total: 'Importe',
 				}
 				break
 		}
@@ -129,7 +132,11 @@ export default {
 			props.typeTable.charAt(0).toUpperCase() + props.typeTable.slice(1)
 
 		const content = computed(() => {
-			if (props.filters) {
+			if (props.typeTable === 'account') {
+				if (props.filters.length <= 0) return []
+				const data = store.getters.account(props.filters[0].id)
+				return data.movements
+			} else if (props.filters) {
 				if (props.filters.length > 0) {
 					const data = store.getters[`${props.typeTable}s`]
 					return data.filter((dataElement) => {
@@ -195,9 +202,14 @@ export default {
 		}
 
 		const editRow = (id) => {
-			dataEdit.value = JSON.parse(
-				JSON.stringify(store.getters[`${props.typeTable}`](id))
-			)
+			if (props.typeTable === 'account') {
+				dataEdit.value = JSON.parse(
+					JSON.stringify(store.getters.accountMovement(props.filters[0].id, id))
+				)
+			} else
+				dataEdit.value = JSON.parse(
+					JSON.stringify(store.getters[`${props.typeTable}`](id))
+				)
 
 			toogleEditing(id)
 		}
@@ -209,7 +221,29 @@ export default {
 		}
 
 		const deleteRow = async (id) => {
-			await store.dispatch(`delete${typeT}`, id)(id)
+			await store.dispatch(`delete${typeT}`, id)
+		}
+
+		const setDate = (date) => {
+			const months = [
+				'Enero',
+				'Febrero',
+				'Marzo',
+				'Abril',
+				'Mayo',
+				'Junio',
+				'Julio',
+				'Agosto',
+				'Septiembre',
+				'Octubre',
+				'Noviembre',
+				'Diciembre',
+			]
+			const dateF = new Date(date)
+			return `${('0' + dateF.getDate()).slice(-2)}/${
+				months[dateF.getMonth()]
+			}/${dateF.getFullYear()}
+			${dateF.getHours()}:${dateF.getMinutes()}:${dateF.getSeconds()}`
 		}
 
 		return {
@@ -222,6 +256,7 @@ export default {
 			editRowCorrect,
 			deleteRow,
 			propsTable,
+			setDate,
 		}
 	},
 }

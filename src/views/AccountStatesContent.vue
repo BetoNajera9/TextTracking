@@ -2,55 +2,93 @@
 	<div :class="{ content: 'content', active: isActive }">
 		<h1>Estados de Cuenta</h1>
 		<div class="div-wrap">
-			<div>
-				<FormKit
-					id="customer-account-states"
-					type="select"
-					label="Cliente"
-					:options="['Colegio Howart', 'Colegio Howart']"
-					input-class="$reset input"
-					inner-class="$reset inner"
+			<div class="wrap-search">
+				<label class="formkit-label">Cliente</label>
+				<search-bar
+					:dataType="'customers'"
+					:propSearch="'name'"
+					:setData="getDataByName"
 				/>
 			</div>
 			<br />
 			<div>
 				<FormKit
-					id="payment-account-states"
-					type="number"
-					label="Cantidad a Pagar"
-					validation="required"
-					:validation-messages="{
-						required: 'La cantidad a pagar es requerida.',
-					}"
-					input-class="$reset input"
-					inner-class="$reset inner"
-				/>
-				<FormKit
 					type="form"
 					:config="{ validationVisibility: 'submit' }"
-					sunmit-label="Buscar"
 					form-class="form"
 					actions-class="submit"
 					message-class="message"
-				/>
+					submit-label="Pagar"
+					@submit="createPayment"
+				>
+					<FormKit
+						id="payment-account-states"
+						type="number"
+						label="Cantidad a Pagar"
+						v-model="payment"
+						validation="required"
+						:validation-messages="{
+							required: 'La cantidad a pagar es requerida.',
+						}"
+						input-class="$reset input"
+						inner-class="$reset inner"
+					/>
+				</FormKit>
 			</div>
 		</div>
-		<table-data :typeTable="'account'" />
+		<p v-show="customer.length > 0">
+			{{ `Total: ${account.total}` }}
+		</p>
+		<table-data :typeTable="'account'" :filters="customer" />
 	</div>
 </template>
 
 <script>
 import TableData from '../components/TableData.vue'
+import SearchBar from '../components/SearchBar.vue'
 
 export default {
 	components: {
 		TableData,
+		SearchBar,
 	},
-	data: () => ({}),
+	data: () => ({
+		customer: [],
+		payment: 0,
+	}),
+
+	watch: {
+		payment() {
+			this.payment = Number(this.payment)
+		},
+	},
+
+	methods: {
+		getDataByName(data) {
+			this.customer = [data]
+		},
+		createPayment() {
+			if (this.customer.length > 0 && this.payment > 0) {
+				this.$store.dispatch('addMovementToAccount', {
+					id: this.customer[0].id,
+					data: {
+						movement: 'payment',
+						total: this.payment * -1,
+						date: new Date(),
+					},
+				})
+			}
+		},
+	},
 
 	computed: {
 		isActive() {
 			return this.$store.getters.isActive
+		},
+		account() {
+			if (this.customer.length > 0)
+				return this.$store.getters.account(this.customer[0].id)
+			return {}
 		},
 	},
 }

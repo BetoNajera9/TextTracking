@@ -1,4 +1,5 @@
 <template>
+	<alert-window :setActive="alertIsActive" :sendInfo="setInfo" :data="data" />
 	<div :class="{ content: 'content', active: isActive }">
 		<h1>Ventas</h1>
 		<div class="wrappSale">
@@ -167,27 +168,32 @@
 				/>
 			</div>
 			<label class="error-label">{{ errorMenssage }}</label>
-			<FormKit type="button" label="Crear" @click="createSale" />
+			<FormKit type="button" label="Crear" @click="toogleAlert" />
 		</div>
 		<table-data :typeTable="'sale'" />
 	</div>
 </template>
 
 <script>
+import alertWindow from '../components/alertWIndow.vue'
 import TableData from '../components/TableData.vue'
 import SearchBar from '../components/SearchBar.vue'
 import { generateSalePdf } from '../service/pdf'
+import { ref } from 'vue'
 
 export default {
 	components: {
 		TableData,
 		SearchBar,
+		alertWindow,
 	},
 	data: () => ({
 		check: true,
 		customerSelected: '',
 		errorMenssage: '',
 		max: 0,
+		alertIsActive: ref(false),
+		data: { message: 'Descuento general', discount: true },
 		customerData: {
 			name: '',
 			phone: '',
@@ -232,12 +238,12 @@ export default {
 		customers() {
 			return this.$store.getters.customersInput
 		},
-		total() {
-			let total = 0
+		subtotal() {
+			let subtotal = 0
 			this.$store.getters.sales.map((element) => {
-				total += element.amount
+				subtotal += element.amount
 			})
-			return total
+			return subtotal
 		},
 		sales() {
 			return this.$store.getters.sales
@@ -248,6 +254,14 @@ export default {
 	},
 
 	methods: {
+		toogleAlert() {
+			this.alertIsActive = !this.alertIsActive
+			return this.alertIsActive
+		},
+		async setInfo(data) {
+			await this.createSale(data)
+			this.toogleAlert()
+		},
 		toogleCheck() {
 			this.check = !this.check
 		},
@@ -295,13 +309,21 @@ export default {
 				CFDI: '',
 			}
 		},
-		async createSale() {
-			console.log(this.customer)
-			if (this.total > 0) {
+		async createSale(discountData) {
+			if (this.subtotal > 0) {
 				let data = {}
 				data.material = this.sales
 				data.date = new Date()
-				data.total = this.total
+				data.subtotal = this.subtotal
+				if (discountData) {
+					data.total =
+						this.subtotal + this.subtotal * (discountData.discount / 100)
+					data.discount = discountData.discount
+				} else {
+					data.discount = 0
+					data.total = this.subtotal
+				}
+
 				if (this.check === true && this.customerSelected !== '') {
 					data.isCustomer = true
 					data.customerId = this.customerSelected

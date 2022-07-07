@@ -74,7 +74,6 @@ export const store = createStore({
 				const account = state.accountStatements.find(
 					(element) => element.id === userId
 				)
-				console.log(account)
 				return account.movements.find((element) => element.id === movementId)
 			}
 		},

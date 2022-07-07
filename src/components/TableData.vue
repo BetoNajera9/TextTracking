@@ -94,7 +94,7 @@ export default {
 				break
 			case 'sale':
 				propsTable.value = {
-					id: 'ISBN',
+					ISBN: 'ISBN',
 					description: 'Descripcion',
 					number: 'Cantidad',
 					unitPrice: 'Precio unitario',

@@ -176,6 +176,8 @@
 <script>
 import TableData from '../components/TableData.vue'
 import SearchBar from '../components/SearchBar.vue'
+import { generateSalePdf } from '../service/pdf'
+
 export default {
 	components: {
 		TableData,
@@ -240,6 +242,9 @@ export default {
 		sales() {
 			return this.$store.getters.sales
 		},
+		customer() {
+			return this.$store.getters.customer(this.customerSelected)
+		},
 	},
 
 	methods: {
@@ -291,6 +296,7 @@ export default {
 			}
 		},
 		async createSale() {
+			console.log(this.customer)
 			if (this.total > 0) {
 				let data = {}
 				data.material = this.sales
@@ -300,10 +306,12 @@ export default {
 					data.isCustomer = true
 					data.customerId = this.customerSelected
 					data.name = this.getCustomerName(this.customerSelected)
+					data.phone = this.customer.phone
+					data.RFC = this.customer.RFC
 					const res = await this.$store.dispatch('setSales', data)
+					generateSalePdf(res)
 					delete data.isCustomer
 					delete data.customerId
-					delete data.name
 					data.id = res.id
 					this.$store.dispatch('addMovementToAccount', {
 						id: this.customerSelected,
@@ -318,7 +326,8 @@ export default {
 					if (this.customerData.name !== '' && this.customerData.phone !== '') {
 						data.isCustomer = false
 						data = { ...data, ...this.customerData }
-						this.$store.dispatch('setSales', data)
+						const res = this.$store.dispatch('setSales', data)
+						generateSalePdf(res)
 						this.$store.dispatch('emptySales')
 						this.emptyData()
 					}

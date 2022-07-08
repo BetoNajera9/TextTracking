@@ -1,1 +1,2 @@
-export * from './sales.js'
+export * from './sales'
+export * from './account'

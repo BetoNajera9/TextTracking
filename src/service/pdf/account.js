@@ -104,7 +104,7 @@ export const generateAccountPdf = (data) => {
 	doc.setFontSize(8)
 	doc.text('FECHA Y FIRMA DE CONFORMIDAD', 25, doc.lastAutoTable.finalY + 35)
 
-	doc.save(`a4_account.pdf`)
+	doc.save(`${data.id}_account.pdf`)
 }
 
 const getBody = (data) => {

@@ -13,6 +13,7 @@
 			<br />
 			<div>
 				<FormKit
+					id="paymentForm"
 					type="form"
 					:config="{ validationVisibility: 'submit' }"
 					form-class="form"
@@ -36,9 +37,17 @@
 				</FormKit>
 			</div>
 		</div>
-		<p v-show="customer.length > 0">
-			{{ `Total: ${account.total}` }}
-		</p>
+		<div class="wrapp-tools">
+			<FormKit
+				type="button"
+				label="PDF"
+				@click="generatePdf"
+				:disabled="customer.length > 0 ? false : true"
+			/>
+			<p v-show="customer.length > 0">
+				{{ `Total: ${account.total}` }}
+			</p>
+		</div>
 		<table-data :typeTable="'account'" :filters="customer" />
 	</div>
 </template>
@@ -46,6 +55,7 @@
 <script>
 import TableData from '../components/TableData.vue'
 import SearchBar from '../components/SearchBar.vue'
+import { generateAccountPdf } from '../service/pdf'
 
 export default {
 	components: {
@@ -77,7 +87,11 @@ export default {
 						date: new Date(),
 					},
 				})
+				this.$formkit.reset('paymentForm')
 			}
+		},
+		generatePdf() {
+			generateAccountPdf(this.account)
 		},
 	},
 
@@ -164,5 +178,9 @@ export default {
 br {
 	height: 5px;
 	background: black;
+}
+
+.wrapp-tools {
+	display: flex;
 }
 </style>

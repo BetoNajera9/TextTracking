@@ -122,6 +122,10 @@ export default {
 				propsTable.value = {
 					id: 'Folio',
 					date: 'Fecha',
+					description: 'Descripcion',
+					number: 'Cantidad',
+					unitPrice: 'Precio unitario',
+					discount: 'Descuento',
 					total: 'Importe',
 				}
 				break

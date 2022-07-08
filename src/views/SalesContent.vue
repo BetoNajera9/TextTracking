@@ -335,12 +335,16 @@ export default {
 					delete data.isCustomer
 					delete data.customerId
 					data.id = res.id
-					this.$store.dispatch('addMovementToAccount', {
-						id: this.customerSelected,
-						data: {
-							movement: 'charge',
-							...data,
-						},
+					data.material.map((element) => {
+						this.$store.dispatch('addMovementToAccount', {
+							id: this.customerSelected,
+							data: {
+								movement: 'charge',
+								...element,
+								total: element.amount,
+								date: new Date(),
+							},
+						})
 					})
 					this.$store.dispatch('emptySales')
 					this.emptyData()

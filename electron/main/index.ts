@@ -292,3 +292,18 @@ ipcMain.on('save-account-pdf', async (e, data) => {
 
 	e.reply('generate-account-pdf', path, data)
 })
+
+ipcMain.on('save-stock-pdf', async (e, data) => {
+	const now = new Date()
+
+	const path = await dialog.showSaveDialog(win as BrowserWindow, {
+		defaultPath: join(
+			app.getPath('downloads'),
+			`${now.getDate()}${
+				now.getMonth() + 1
+			}${now.getFullYear()}${now.getHours()}_stock.pdf`
+		),
+	})
+
+	e.reply('generate-stock-pdf', path, data)
+})

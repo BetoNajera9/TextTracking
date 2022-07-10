@@ -99,6 +99,8 @@
 import TableData from '../components/TableData.vue'
 import SearchBar from '../components/SearchBar.vue'
 
+import { ipcRenderer } from 'electron'
+
 export default {
 	components: {
 		TableData,
@@ -114,19 +116,19 @@ export default {
 		},
 	}),
 	watch: {
-		'data.description'() {
-			this.data.description = this.data.description.toUpperCase()
+		'data.description'(newDescription) {
+			if (newDescription) this.data.description = newDescription.toUpperCase()
 		},
-		'data.number'() {
-			this.data.number = Number(this.data.number)
+		'data.number'(newNumber) {
+			if (newNumber) this.data.number = Number(newNumber)
 		},
-		'data.unitPrice'() {
-			this.data.unitPrice = Number(this.data.unitPrice)
+		'data.unitPrice'(newUnitPrice) {
+			if (newUnitPrice) this.data.unitPrice = Number(newUnitPrice)
 		},
 	},
 	methods: {
 		addToStock: async function () {
-			await this.$store.dispatch('setStock', this.data)
+			ipcRenderer.send('create-stock', { ...this.data })
 			this.$formkit.reset('addMaterialForm')
 		},
 		getDataById(data) {

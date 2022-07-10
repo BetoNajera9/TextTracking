@@ -55,6 +55,8 @@
 
 <script>
 import { computed } from 'vue'
+
+import { ActionTypes } from '../store/actions'
 import { useStore } from '../store'
 
 export default {
@@ -66,7 +68,7 @@ export default {
 		})
 
 		const setActive = () => {
-			store.dispatch('toogleActive')
+			store.dispatch(ActionTypes.toogleActive)
 		}
 
 		return {

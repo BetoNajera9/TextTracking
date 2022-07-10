@@ -5,8 +5,8 @@
 
 <script>
 import SideNavigatorBar from './components/SideNavigatorBar.vue'
-import { useStore } from './store'
 import { onBeforeMount, ref } from 'vue'
+import { ipcRenderer } from 'electron'
 
 export default {
 	name: 'App',
@@ -15,8 +15,6 @@ export default {
 	},
 
 	setup() {
-		const store = useStore()
-
 		const isActive = ref(false)
 
 		const getActiveBar = () => {
@@ -24,10 +22,10 @@ export default {
 		}
 
 		onBeforeMount(() => {
-			store.dispatch('setCustomers')
-			store.dispatch('setAllStock')
-			store.dispatch('setHistory')
-			store.dispatch('setAccountStatements')
+			ipcRenderer.send('get-and-set-customers')
+			ipcRenderer.send('get-and-set-stock')
+			ipcRenderer.send('get-sale-set-history')
+			ipcRenderer.send('get-and-set-account-statements')
 		})
 
 		return {

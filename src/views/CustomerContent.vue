@@ -44,10 +44,6 @@
 				type="text"
 				label="RFC"
 				v-model="data.RFC"
-				validation="matches:/^[A-Z]+$/"
-				:validation-messages="{
-					matches: 'El formato del RFC es invalido.',
-				}"
 				input-class="$reset input"
 				inner-class="$reset inner"
 			/>
@@ -78,6 +74,7 @@
 
 <script>
 import TableData from '../components/TableData.vue'
+import { ipcRenderer } from 'electron'
 
 export default {
 	components: {
@@ -94,27 +91,22 @@ export default {
 	}),
 
 	watch: {
-		'data.name'() {
-			this.data.name = this.data.name.toUpperCase()
+		'data.name'(newName) {
+			if (newName) this.data.name = newName.toUpperCase()
 		},
-		'data.RFC'() {
-			this.data.RFC = this.data.RFC.toUpperCase()
+		'data.RFC'(newRFC) {
+			if (newRFC) this.data.RFC = newRFC.toUpperCase()
 		},
-		'data.CFDI'() {
-			this.data.CFDI = this.data.CFDI.toUpperCase()
+		'data.CFDI'(newCFDI) {
+			if (newCFDI) this.data.CFDI = newCFDI.toUpperCase()
 		},
 	},
 
 	methods: {
-		createCustome: async function () {
-			const account = {}
-			const data = await this.$store.dispatch('setCustomer', this.data)
-			account.id = data.id
-			account.name = data.name
-			account.movements = []
-			account.total = 0
-			await this.$store.dispatch('setAccountStatement', account)
-			// this.$formkit.reset('customerForm')
+		createCustome() {
+			ipcRenderer.send('create-customer', JSON.parse(JSON.stringify(this.data)))
+
+			this.$formkit.reset('customerForm')
 		},
 	},
 

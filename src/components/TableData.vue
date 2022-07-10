@@ -71,7 +71,9 @@
 
 <script>
 import { computed, watch, ref } from 'vue'
+import { ipcRenderer } from 'electron'
 
+import { ActionTypes } from '../store/actions'
 import { useStore } from '../store'
 
 export default {
@@ -132,8 +134,6 @@ export default {
 		}
 
 		const store = useStore()
-		const typeT =
-			props.typeTable.charAt(0).toUpperCase() + props.typeTable.slice(1)
 
 		const content = computed(() => {
 			if (props.typeTable === 'account') {
@@ -175,7 +175,7 @@ export default {
 		watch(
 			() => dataEdit.value.unitPrice,
 			() => {
-				dataEdit.value.intPrice = Number(dataEdit.value.intPrice)
+				dataEdit.value.unitPrice = Number(dataEdit.value.unitPrice)
 				dataEdit.value.amount =
 					Number(dataEdit.value.number) *
 					(Number(dataEdit.value.unitPrice) -
@@ -218,14 +218,28 @@ export default {
 			toogleEditing(id)
 		}
 
-		const editRowCorrect = async (id) => {
-			await store.dispatch(`update${typeT}`, dataEdit.value)
+		const editRowCorrect = (id) => {
+			if (props.typeTable === 'sale')
+				store.dispatch(ActionTypes.updateSale, dataEdit.value)
+			else if (props.typeTable === 'account')
+				ipcRenderer.send(
+					`update-${props.typeTable}`,
+					{ id: props.filters[0].id },
+					JSON.parse(JSON.stringify(dataEdit.value))
+				)
+			else
+				ipcRenderer.send(
+					`update-${props.typeTable}`,
+					{ id },
+					JSON.parse(JSON.stringify(dataEdit.value))
+				)
 
 			toogleEditing(id)
 		}
 
-		const deleteRow = async (id) => {
-			await store.dispatch(`delete${typeT}`, id)
+		const deleteRow = (id) => {
+			if (props.typeTable === 'sale') store.dispatch(ActionTypes.deleteSale, id)
+			else ipcRenderer.send(`delete-${props.typeTable}`, { id })
 		}
 
 		const setDate = (date) => {

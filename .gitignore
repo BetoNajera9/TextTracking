@@ -1,7 +1,8 @@
 .DS_Store
 node_modules
 /dist
-
+/release
+package-lock.json
 
 # local env files
 .env.local
@@ -21,10 +22,6 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
-
-#Electron-builder output
-/dist_electron
-/dist_api
 
 #DB
 /db

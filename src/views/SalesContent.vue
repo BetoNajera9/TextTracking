@@ -71,10 +71,6 @@
 								type="text"
 								label="RFC"
 								v-model="customerData.RFC"
-								validation="matches:/^[A-Z]$/"
-								:validation-messages="{
-									matches: 'El formato del RFC es invalido.',
-								}"
 								input-class="$reset input"
 								inner-class="$reset inner"
 							/>
@@ -175,11 +171,13 @@
 </template>
 
 <script>
+import { ipcRenderer } from 'electron'
+import { ref } from 'vue'
+
 import alertWindow from '../components/alertWIndow.vue'
 import TableData from '../components/TableData.vue'
 import SearchBar from '../components/SearchBar.vue'
-import { generateSalePdf } from '../service/pdf'
-import { ref } from 'vue'
+import { ActionTypes } from '../store/actions'
 
 export default {
 	components: {
@@ -211,23 +209,23 @@ export default {
 	}),
 
 	watch: {
-		'customerData.name'() {
-			this.customerData.name = this.customerData.name.toUpperCase()
+		'customerData.name'(newname) {
+			this.customerData.name = newname.toUpperCase()
 		},
-		'customerData.RFC'() {
-			this.customerData.RFC = this.customerData.RFC.toUpperCase()
+		'customerData.RFC'(newRFC) {
+			this.customerData.RFC = newRFC.toUpperCase()
 		},
-		'customerData.CFDI'() {
-			this.customerData.CFDI = this.customerData.CFDI.toUpperCase()
+		'customerData.CFDI'(newCFDI) {
+			this.customerData.CFDI = newCFDI.toUpperCase()
 		},
-		'saleData.number'() {
-			this.saleData.number = Number(this.saleData.number)
+		'saleData.number'(newnumber) {
+			this.saleData.number = Number(newnumber)
 		},
-		'saleData.unitPrice'() {
-			this.saleData.unitPrice = Number(this.saleData.unitPrice)
+		'saleData.unitPrice'(newunitPrice) {
+			this.saleData.unitPrice = Number(newunitPrice)
 		},
-		'saleData.discount'() {
-			this.saleData.discount = Number(this.saleData.discount)
+		'saleData.discount'(newdiscount) {
+			this.saleData.discount = Number(newdiscount)
 		},
 	},
 
@@ -289,7 +287,7 @@ export default {
 					(Number(this.saleData.unitPrice) -
 						Number(this.saleData.unitPrice) *
 							(Number(this.saleData.discount) / 100))
-				this.$store.dispatch('setSale', { ...this.saleData, amount })
+				this.$store.dispatch(ActionTypes.setSale, { ...this.saleData, amount })
 				this.saleData.id = ''
 				this.saleData.description = ''
 				this.saleData.number = ''
@@ -309,7 +307,7 @@ export default {
 				CFDI: '',
 			}
 		},
-		async createSale(discountData) {
+		createSale(discountData) {
 			if (this.subtotal > 0) {
 				let data = {}
 				data.material = this.sales
@@ -317,7 +315,7 @@ export default {
 				data.subtotal = this.subtotal
 				if (discountData) {
 					data.total =
-						this.subtotal + this.subtotal * (discountData.discount / 100)
+						this.subtotal - this.subtotal * (discountData.discount / 100)
 					data.discount = discountData.discount
 				} else {
 					data.discount = 0
@@ -330,31 +328,17 @@ export default {
 					data.name = this.getCustomerName(this.customerSelected)
 					data.phone = this.customer.phone
 					data.RFC = this.customer.RFC
-					const res = await this.$store.dispatch('setSales', data)
-					generateSalePdf(res)
-					delete data.isCustomer
-					delete data.customerId
-					data.id = res.id
-					data.material.map((element) => {
-						this.$store.dispatch('addMovementToAccount', {
-							id: this.customerSelected,
-							data: {
-								movement: 'charge',
-								...element,
-								total: element.amount,
-								date: new Date(),
-							},
-						})
-					})
-					this.$store.dispatch('emptySales')
+					ipcRenderer.send('create-sale', JSON.parse(JSON.stringify(data)))
+					this.$store.dispatch(ActionTypes.emptySales)
 					this.emptyData()
 				} else {
 					if (this.customerData.name !== '' && this.customerData.phone !== '') {
 						data.isCustomer = false
-						data = { ...data, ...this.customerData }
-						const res = this.$store.dispatch('setSales', data)
-						generateSalePdf(res)
-						this.$store.dispatch('emptySales')
+						ipcRenderer.send(
+							'create-sale',
+							JSON.parse(JSON.stringify({ ...data, ...this.customerData }))
+						)
+						this.$store.dispatch(ActionTypes.emptySales)
 						this.emptyData()
 					}
 				}
@@ -363,7 +347,7 @@ export default {
 	},
 
 	beforeUnmount() {
-		this.$store.dispatch('emptySales')
+		this.$store.dispatch(ActionTypes.emptySales)
 	},
 }
 </script>

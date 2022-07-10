@@ -56,6 +56,7 @@
 import TableData from '../components/TableData.vue'
 import SearchBar from '../components/SearchBar.vue'
 import { generateAccountPdf } from '../service/pdf'
+import { ipcRenderer } from 'electron'
 
 export default {
 	components: {
@@ -79,14 +80,16 @@ export default {
 		},
 		createPayment() {
 			if (this.customer.length > 0 && this.payment > 0) {
-				this.$store.dispatch('addMovementToAccount', {
-					id: this.customer[0].id,
-					data: {
-						movement: 'payment',
+				ipcRenderer.send(
+					'add-movements-to-account',
+					{ id: this.customer[0].id },
+					{
+						movement: 'PAYMENT',
 						total: this.payment * -1,
 						date: new Date(),
-					},
-				})
+					}
+				)
+
 				this.$formkit.reset('paymentForm')
 			}
 		},

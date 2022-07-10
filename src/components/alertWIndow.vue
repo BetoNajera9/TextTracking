@@ -73,17 +73,19 @@ export default {
 
 <style scoped>
 .wrapp-alert-window {
-	position: absolute;
-	top: 0px;
+	position: fixed;
+	top: 0;
+	left: 0;
 	width: 100vw;
-	height: 100vh;
+	height: 100%;
 	background: rgba(0, 0, 0, 0.245);
-	z-index: 1;
+	z-index: 999;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
 .alert-window {
+	position: sticky;
 	margin: auto;
 	background: white;
 	width: 420px;

@@ -1,14 +1,9 @@
-import { app, BrowserWindow, shell, ipcMain } from 'electron'
+import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron'
 import { release } from 'os'
 import { join } from 'path'
 
 import { v4 } from 'uuid'
 import db from '../lib/database'
-
-// import './api/accountsStatements'
-// import './api/customer'
-// import './api/sales'
-// import './api/stock'
 
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith('6.1')) app.disableHardwareAcceleration()
@@ -280,4 +275,20 @@ ipcMain.on('delete-stock', (e, data) => {
 	db.connection.get('stock').remove(data).write()
 
 	e.reply('delete-stock-from-store', data)
+})
+
+ipcMain.on('save-sale-pdf', async (e, data) => {
+	const path = await dialog.showSaveDialog(win, {
+		defaultPath: join(app.getPath('downloads'), `${data.id}_sale.pdf`),
+	})
+
+	e.reply('generate-sale-pdf', path, data)
+})
+
+ipcMain.on('save-account-pdf', async (e, data) => {
+	const path = await dialog.showSaveDialog(win, {
+		defaultPath: join(app.getPath('downloads'), `${data.id}_sale.pdf`),
+	})
+
+	e.reply('generate-account-pdf', path, data)
 })

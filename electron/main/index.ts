@@ -278,7 +278,7 @@ ipcMain.on('delete-stock', (e, data) => {
 })
 
 ipcMain.on('save-sale-pdf', async (e, data) => {
-	const path = await dialog.showSaveDialog(win, {
+	const path = await dialog.showSaveDialog(win as BrowserWindow, {
 		defaultPath: join(app.getPath('downloads'), `${data.id}_sale.pdf`),
 	})
 
@@ -286,9 +286,24 @@ ipcMain.on('save-sale-pdf', async (e, data) => {
 })
 
 ipcMain.on('save-account-pdf', async (e, data) => {
-	const path = await dialog.showSaveDialog(win, {
+	const path = await dialog.showSaveDialog(win as BrowserWindow, {
 		defaultPath: join(app.getPath('downloads'), `${data.id}_sale.pdf`),
 	})
 
 	e.reply('generate-account-pdf', path, data)
+})
+
+ipcMain.on('save-stock-pdf', async (e, data) => {
+	const now = new Date()
+
+	const path = await dialog.showSaveDialog(win as BrowserWindow, {
+		defaultPath: join(
+			app.getPath('downloads'),
+			`${now.getDate()}${
+				now.getMonth() + 1
+			}${now.getFullYear()}${now.getHours()}_stock.pdf`
+		),
+	})
+
+	e.reply('generate-stock-pdf', path, data)
 })

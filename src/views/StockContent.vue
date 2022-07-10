@@ -91,6 +91,9 @@
 				/>
 			</div>
 		</div>
+		<div class="wrapp-tools">
+			<FormKit type="button" label="PDF" @click="generatePdf" />
+		</div>
 		<table-data :typeTable="'stock'" :filters="filters" />
 	</div>
 </template>
@@ -151,10 +154,16 @@ export default {
 				return true
 			})
 		},
+		generatePdf() {
+			ipcRenderer.send('save-stock-pdf', JSON.parse(JSON.stringify(this.stock)))
+		},
 	},
 	computed: {
 		isActive() {
 			return this.$store.getters.isActive
+		},
+		stock() {
+			return this.$store.getters.stocks
 		},
 	},
 }

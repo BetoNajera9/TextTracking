@@ -1,4 +1,11 @@
-import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron'
+import {
+	app,
+	autoUpdater,
+	BrowserWindow,
+	shell,
+	ipcMain,
+	dialog,
+} from 'electron'
 import { release } from 'os'
 import { join } from 'path'
 
@@ -108,6 +115,15 @@ ipcMain.handle('open-win', (event, arg) => {
 		// childWindow.webContents.openDevTools({ mode: "undocked", activate: true })
 	}
 })
+
+// Deploy
+
+if (import.meta.env.PROD) {
+	const server = 'marce-project-deploy-5cgyl8bkr-betonajera.vercel.app'
+	const url = `${server}/update/${process.platform}/${app.getVersion()}`
+
+	autoUpdater.setFeedURL({ url })
+}
 
 // Accounts API
 ipcMain.on('get-and-set-account-statements', (e) => {

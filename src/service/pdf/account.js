@@ -17,7 +17,7 @@ const months = [
 	'Diciembre',
 ]
 
-export const generateAccountPdf = (data) => {
+export const generateAccountPdf = (path, data) => {
 	const date = new Date()
 
 	const doc = new jsPDF('p', 'mm', [210, 297])
@@ -104,7 +104,7 @@ export const generateAccountPdf = (data) => {
 	doc.setFontSize(8)
 	doc.text('FECHA Y FIRMA DE CONFORMIDAD', 25, doc.lastAutoTable.finalY + 35)
 
-	doc.save(`${data.id}_account.pdf`)
+	doc.save(path)
 }
 
 const getBody = (data) => {

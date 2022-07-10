@@ -55,7 +55,6 @@
 <script>
 import TableData from '../components/TableData.vue'
 import SearchBar from '../components/SearchBar.vue'
-import { generateAccountPdf } from '../service/pdf'
 import { ipcRenderer } from 'electron'
 
 export default {
@@ -94,7 +93,10 @@ export default {
 			}
 		},
 		generatePdf() {
-			generateAccountPdf(this.account)
+			ipcRenderer.send(
+				'save-account-pdf',
+				JSON.parse(JSON.stringify(this.account))
+			)
 		},
 	},
 

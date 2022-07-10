@@ -3,7 +3,6 @@ import { ipcRenderer } from 'electron'
 
 import { Stock, Customer, Sale, AccountStatement, Movement } from '../types'
 import { Mutations, MutationTypes } from './mutations'
-import { generateSalePdf } from '../service/pdf'
 import { State } from './state'
 
 export enum ActionTypes {
@@ -160,7 +159,7 @@ export const actions: ActionTree<State, State> & Actions = {
 			ipcRenderer.send('update-stock', { id: stock.id }, { ...stock })
 		})
 
-		generateSalePdf(data)
+		ipcRenderer.send('save-sale-pdf', data)
 
 		if (data.isCustomer === true) {
 			delete data.isCustomer

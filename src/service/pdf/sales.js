@@ -2,7 +2,7 @@ import { jsPDF } from 'jspdf'
 import { applyPlugin } from 'jspdf-autotable'
 applyPlugin(jsPDF)
 
-export const generateSalePdf = (data) => {
+export const generateSalePdf = (path, data) => {
 	const months = [
 		'Enero',
 		'Febrero',
@@ -100,7 +100,7 @@ export const generateSalePdf = (data) => {
 	doc.setFontSize(8)
 	doc.text('FECHA Y FIRMA DE CONFORMIDAD', 25, doc.lastAutoTable.finalY + 35)
 
-	doc.save(`${data.id}_sale.pdf`)
+	doc.save(path)
 }
 
 const getBody = (data) => {

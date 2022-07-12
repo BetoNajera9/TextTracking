@@ -63,7 +63,6 @@ export default {
 		}
 
 		watch(searchInput, (newSearchInput) => {
-			console.log(props.propSearch)
 			if (props.propSearch !== 'id')
 				searchInput.value = newSearchInput.toUpperCase()
 		})

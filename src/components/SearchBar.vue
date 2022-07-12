@@ -62,8 +62,9 @@ export default {
 			props.setData(data)
 		}
 
-		watch(searchInput, () => {
-			searchInput.value = searchInput.value.toUpperCase()
+		watch(searchInput, (newSearchInput) => {
+			if (props.propSearch !== 'id')
+				searchInput.value = newSearchInput.toUpperCase()
 		})
 
 		return {

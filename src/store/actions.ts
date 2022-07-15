@@ -175,6 +175,7 @@ export const actions: ActionTree<State, State> & Actions = {
 						...element,
 						total: element.amount,
 						date: new Date(),
+						id: data.id,
 					}
 				)
 			})

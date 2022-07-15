@@ -119,7 +119,7 @@ ipcMain.handle('open-win', (event, arg) => {
 // Deploy
 
 if (import.meta.env.PROD) {
-	const server = 'marce-project-deploy-5cgyl8bkr-betonajera.vercel.app'
+	const server = 'marce-project-deploy-1icantlmz-betonajera.vercel.app'
 	const url = `${server}/update/${process.platform}/${app.getVersion()}`
 
 	autoUpdater.setFeedURL({ url })

@@ -191,7 +191,7 @@ export default {
 		errorMenssage: '',
 		max: 0,
 		alertIsActive: ref(false),
-		data: { message: 'Descuento general', discount: true },
+		data: { message: 'Descuento general', label: 'Descuento', discount: true },
 		customerData: {
 			name: '',
 			phone: '',

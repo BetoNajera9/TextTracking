@@ -1,4 +1,5 @@
 <template>
+	<alert-window :setActive="alertIsActive" :sendInfo="setInfo" :data="data" />
 	<div class="table">
 		<table class="data-table">
 			<tr>
@@ -40,6 +41,12 @@
 				</td>
 				<td>
 					<mdicon
+						v-show="typeTable === 'stock'"
+						class="iconTable plus"
+						name="plus"
+						@click="toogleAlert(data.id)"
+					/>
+					<mdicon
 						v-show="editingId !== data.id"
 						class="iconTable pencil"
 						name="pencil"
@@ -73,10 +80,14 @@
 import { computed, watch, ref } from 'vue'
 import { ipcRenderer } from 'electron'
 
+import alertWindow from './alertWIndow.vue'
 import { ActionTypes } from '../store/actions'
 import { useStore } from '../store'
 
 export default {
+	components: {
+		alertWindow,
+	},
 	props: {
 		typeTable: String,
 		filters: Array,
@@ -131,6 +142,31 @@ export default {
 					total: 'Importe',
 				}
 				break
+		}
+
+		const idSelected = ref('')
+		const data = {
+			message: 'Agregar material',
+			label: 'Agregar',
+			discount: true,
+		}
+		const alertIsActive = ref(false)
+		const toogleAlert = (id) => {
+			alertIsActive.value = !alertIsActive.value
+			idSelected.value = id
+			return alertIsActive.value
+		}
+		const setInfo = (data) => {
+			if (data) {
+				const stock = store.getters.stock(idSelected.value)
+				stock.number += data.discount
+				ipcRenderer.send(
+					'update-stock',
+					{ id: idSelected.value },
+					JSON.parse(JSON.stringify(stock))
+				)
+			}
+			toogleAlert()
 		}
 
 		const store = useStore()
@@ -275,6 +311,10 @@ export default {
 			deleteRow,
 			propsTable,
 			setDate,
+			alertIsActive,
+			data,
+			toogleAlert,
+			setInfo,
 		}
 	},
 }
@@ -313,5 +353,9 @@ td {
 
 .iconTable.pencil {
 	color: rgba(0, 0, 0, 0.5);
+}
+
+.iconTable.plus {
+	color: rgba(0, 146, 0, 0.5);
 }
 </style>

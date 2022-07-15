@@ -121,7 +121,9 @@ const getBody = (data) => {
 			}
 			return 0
 		})
-		.sort((objA, objB) => Number(objA.date) - Number(objB.date))
+		.sort(
+			(objA, objB) => Number(new Date(objA.date)) - Number(new Date(objB.date))
+		)
 	const body = []
 
 	sortData.map((element) => {

@@ -6,7 +6,7 @@
 				v-if="data.discount ? true : false"
 				id="discount"
 				type="number"
-				label="Descuento"
+				:label="data.label"
 				step="10"
 				min="0"
 				max="100"

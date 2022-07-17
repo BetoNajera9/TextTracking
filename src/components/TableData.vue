@@ -27,10 +27,30 @@
 							v-if="
 								prop === 'unitPrice' || prop === 'amount' || prop === 'total'
 							"
-							>$
+						>
+							${{
+								data[prop]
+									? data[prop]
+											.toFixed(2)
+											.toString()
+											.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+									: '-'
+							}}
 						</span>
-						{{ data[prop] }}
-						<span v-if="prop === 'discount'"> %</span>
+
+						<span v-else-if="prop === 'discount'">
+							{{
+								data[prop]
+									? data[prop]
+											.toFixed(2)
+											.toString()
+											.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+									: '0'
+							}}
+							%
+						</span>
+
+						<span v-else="prop === 'discount'"> {{ data[prop] }}</span>
 					</span>
 					<input
 						v-else

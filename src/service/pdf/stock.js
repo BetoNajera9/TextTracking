@@ -20,25 +20,36 @@ const months = [
 export const generateStockPdf = (path, data) => {
 	const date = new Date()
 
+	const customerY = 45
+	const minCustomerX = 110
+	const minX = 16
+	const maxX = 192
+
 	const doc = new jsPDF('p', 'mm', [210, 297])
 
+	// Header table
+	doc.line(minX - 2, customerY - 5, maxX + 3, customerY - 5)
+	doc.line(minX - 2, customerY - 5, minX - 2, customerY + 25)
+	doc.line(minCustomerX - 5, customerY - 5, minCustomerX - 5, customerY + 25)
+	doc.line(maxX + 3, customerY - 5, maxX + 3, customerY + 25)
+	doc.line(minX - 2, customerY + 25, maxX + 3, customerY + 25)
+
 	doc.setFontSize(12)
-	doc.text('MARCELA ELENA ZUÑIGA TORRES', 105, 20, 'center')
-	doc.text('HERRAMIENTAS PARA LA EDUCACION Y EL APRENDIZAJE', 105, 30, 'center')
+	doc.text('CREATIVIDAD EDUCATIVA', 105, 20, 'center')
 
 	doc.setFontSize(10)
-	doc.text('MARCELA ELENA ZUÑIGA TORRES', 10, 50)
-	doc.text('SACALUM 58 LOMAS DE PADIERNA', 10, 55)
-	doc.text('RFC: ZUTM680814BM7', 10, 60)
-	doc.text('TEL. OFICINA 55 30 89 25 79 CEL 5516577552', 10, 65)
-	doc.text('EMAIL: marce_helen@hotmail.com', 10, 70)
+	doc.text('MARCELA ELENA ZUÑIGA TORRES', minX, customerY)
+	doc.text('SACALUM 58 LOMAS DE PADIERNA', minX, customerY + 5)
+	doc.text('RFC: ZUTM680814BM7', minX, customerY + 10)
+	doc.text('TEL. OFICINA: 55 30 89 25 79 CEL: 5516577552', minX, customerY + 15)
+	doc.text('EMAIL: marce_helen@hotmail.com', minX, customerY + 20)
 
-	doc.text('ALMACEN', 150, 45)
-	doc.text('FECHA:', 120, 55)
+	doc.text('ALMACEN', minCustomerX + 40, customerY, 'center')
+	doc.text('FECHA:', minCustomerX, customerY + 5)
 	doc.text(
 		`${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`,
-		200,
-		55,
+		maxX,
+		customerY + 5,
 		'right'
 	)
 
@@ -47,12 +58,10 @@ export const generateStockPdf = (path, data) => {
 		startY: finalY,
 		headStyles: { halign: 'center' },
 		columnStyles: {
-			0: { halign: 'center', cellWidth: 30 },
-			1: { halign: 'center' },
-			2: { halign: 'center' },
-			3: { halign: 'center' },
+			0: { halign: 'center', cellWidth: 40 },
+			2: { halign: 'center', cellWidth: 30 },
+			3: { halign: 'right', cellWidth: 30 },
 		},
-		theme: 'plain',
 		head: [['ISBN', 'DESCRIPCION', 'CANTIDAD', 'PRECIO UNITARIO']],
 		body: getBody(data),
 	})
@@ -68,7 +77,16 @@ const getBody = (data) => {
 		row.push(element.ISBN || '')
 		row.push(element.description || '')
 		row.push(`${element.number || '0'}`)
-		row.push(`$ ${element.unitPrice || '0'}`)
+		row.push(
+			`$ ${
+				element.unitPrice
+					? element.unitPrice
+							.toFixed(2)
+							.toString()
+							.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+					: '0'
+			}`
+		)
 		body.push(row)
 	})
 	return body

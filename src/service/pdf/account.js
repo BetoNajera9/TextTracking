@@ -20,36 +20,58 @@ const months = [
 export const generateAccountPdf = (path, data) => {
 	const date = new Date()
 
+	const customerY = 35
+	const minCustomerX = 110
+	const minX = 16
+	const maxX = 192
+
 	const doc = new jsPDF('p', 'mm', [210, 297])
 
+	// Header table
+	doc.line(minX - 2, customerY - 5, maxX + 3, customerY - 5)
+	doc.line(minX - 2, customerY - 5, minX - 2, customerY + 40)
+	doc.line(minCustomerX - 5, customerY - 5, minCustomerX - 5, customerY + 40)
+	doc.line(maxX + 3, customerY - 5, maxX + 3, customerY + 40)
+	doc.line(minX - 2, customerY + 40, maxX + 3, customerY + 40)
+
 	doc.setFontSize(12)
-	doc.text('MARCELA ELENA ZUÑIGA TORRES', 105, 20, 'center')
-	doc.text('HERRAMIENTAS PARA LA EDUCACION Y EL APRENDIZAJE', 105, 30, 'center')
+	doc.text('CREATIVIDAD EDUCATIVA', 105, 20, 'center')
 
 	doc.setFontSize(10)
-	doc.text('MARCELA ELENA ZUÑIGA TORRES', 10, 50)
-	doc.text('SACALUM 58 LOMAS DE PADIERNA', 10, 55)
-	doc.text('RFC: ZUTM680814BM7', 10, 60)
-	doc.text('TEL. OFICINA 55 30 89 25 79 CEL 5516577552', 10, 65)
-	doc.text('EMAIL: marce_helen@hotmail.com', 10, 70)
+	doc.text('MARCELA ELENA ZUÑIGA TORRES', minX, customerY + 10)
+	doc.text('SACALUM 58 LOMAS DE PADIERNA', minX, customerY + 15)
+	doc.text('RFC: ZUTM680814BM7', minX, customerY + 20)
+	doc.text('TEL. OFICINA: 55 30 89 25 79 CEL: 5516577552', minX, customerY + 25)
+	doc.text('EMAIL: marce_helen@hotmail.com', minX, customerY + 30)
 
-	doc.text('ESTADO DE CUENTA', 140, 45)
-	doc.text('FECHA:', 120, 55)
+	doc.text('ESTADO DE CUENTA', minCustomerX + 40, customerY, 'center')
+	doc.text('FECHA:', minCustomerX, customerY + 5)
 	doc.text(
 		`${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`,
-		200,
-		55,
+		maxX,
+		customerY + 5,
 		'right'
 	)
-	doc.line(200, 57, 120, 57)
-	doc.text('CLIENTE:', 120, 65)
-	doc.text(data.name, 200, 65, 'right')
+	doc.line(minCustomerX - 5, customerY + 6, maxX + 3, customerY + 6)
+	doc.text('CLIENTE:', minCustomerX, customerY + 10)
+	doc.text(data.name, maxX, customerY + 10, { align: 'right', maxWidth: 64 })
 
-	doc.text(`TELEFONO:`, 120, 70)
-	doc.text(`${data.phone || ''}`, 160, 70, 'right')
+	doc.text(`DOMICILIO:`, minCustomerX, customerY + 20)
+	doc.setFontSize(8)
+	doc.text(`${data.address || ''}`, maxX, customerY + 20, {
+		align: 'right',
+		maxWidth: 62,
+	})
+	doc.setFontSize(10)
 
-	doc.text(`RFC:`, 162, 70)
-	doc.text(`${data.RFC || ''}`, 200, 70, 'right')
+	doc.text(`CFDI:`, minCustomerX, customerY + 30)
+	doc.text(`${data.CFDI || ''}`, maxX, customerY + 30, 'right')
+
+	doc.text(`TEL.:`, minCustomerX, customerY + 35)
+	doc.text(`${data.phone || ''}`, minCustomerX + 40, customerY + 35, 'right')
+
+	doc.text(`RFC:`, minCustomerX + 42, customerY + 35)
+	doc.text(`${data.RFC || ''}`, maxX, customerY + 35, 'right')
 
 	var finalY = 80
 	doc.autoTable({
@@ -61,9 +83,8 @@ export const generateAccountPdf = (path, data) => {
 			3: { halign: 'center' },
 			4: { halign: 'center' },
 			5: { halign: 'center' },
-			6: { halign: 'center' },
+			6: { halign: 'right', cellWidth: 20 },
 		},
-		theme: 'plain',
 		head: [
 			[
 				'FOLIO',
@@ -78,27 +99,20 @@ export const generateAccountPdf = (path, data) => {
 		body: getBody(data.movements),
 	})
 
-	doc.text(`SUBTOTAL:`, 150, doc.lastAutoTable.finalY + 10)
+	doc.text('TOTAL:', 150, doc.lastAutoTable.finalY + 10)
 	doc.text(
-		`$ ${data.subtotal || ''}`,
+		`$ ${
+			data.total
+				? data.total
+						.toFixed(2)
+						.toString()
+						.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+				: '0'
+		}`,
 		190,
 		doc.lastAutoTable.finalY + 10,
 		'right'
 	)
-
-	doc.text(`DESCUENTO:`, 150, doc.lastAutoTable.finalY + 15)
-	doc.text(
-		`${data.discount || ''}%`,
-		190,
-		doc.lastAutoTable.finalY + 15,
-		'right'
-	)
-
-	doc.text(`IVA:`, 150, doc.lastAutoTable.finalY + 20)
-	doc.text(`${data.IVA || ''}%`, 190, doc.lastAutoTable.finalY + 20, 'right')
-
-	doc.text('TOTAL:', 150, doc.lastAutoTable.finalY + 25)
-	doc.text(`$ ${data.total || ''}`, 190, doc.lastAutoTable.finalY + 25, 'right')
 
 	doc.line(20, doc.lastAutoTable.finalY + 30, 80, doc.lastAutoTable.finalY + 30)
 	doc.setFontSize(8)
@@ -133,11 +147,38 @@ const getBody = (data) => {
 		row.push(
 			`${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`
 		)
-		row.push(element.description || '')
-		row.push(`${element.number || '-'}`)
-		row.push(`$ ${element.unitPrice || '-'}`)
-		row.push(`${element.discount || '-'}%`)
-		row.push(`$ ${element.total || '-'}%`)
+		row.push(element.description ?? '-')
+		row.push(`${element.number ?? '-'}`)
+		row.push(
+			`$ ${
+				element.unitPrice
+					? element.unitPrice
+							.toFixed(2)
+							.toString()
+							.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+					: '0'
+			}`
+		)
+		row.push(
+			`${
+				element.discount
+					? element.discount
+							.toFixed(2)
+							.toString()
+							.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+					: '0'
+			}%`
+		)
+		row.push(
+			`$ ${
+				element.total
+					? element.total
+							.toFixed(2)
+							.toString()
+							.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+					: '0'
+			}`
+		)
 		body.push(row)
 	})
 	return body

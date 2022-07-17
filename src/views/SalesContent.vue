@@ -16,16 +16,14 @@
 				<div class="collapsible-content">
 					<div class="content-inner">
 						<FormKit name="account" type="group" :disabled="!check">
-							<FormKit
-								id="customer"
-								type="select"
-								label="Cliente"
-								placeholder="Selecciona un cliente"
-								:options="customers"
-								v-model="customerSelected"
-								input-class="$reset input"
-								inner-class="$reset inner"
-							/>
+							<div class="wrap-search">
+								<label class="formkit-label">Cliente</label>
+								<search-bar
+									:dataType="'customers'"
+									:propSearch="'name'"
+									:setData="getDataByName"
+								/>
+							</div>
 						</FormKit>
 					</div>
 				</div>
@@ -75,7 +73,7 @@
 								inner-class="$reset inner"
 							/>
 
-							<FormKit
+							<!-- <FormKit
 								id="wayToPay"
 								type="select"
 								label="Forma de pago"
@@ -83,7 +81,7 @@
 								:options="['EFECTO', 'TARJETA DE CREDITO/DEBITO']"
 								input-class="$reset input"
 								inner-class="$reset inner"
-							/>
+							/> -->
 
 							<FormKit
 								id="CFDI"
@@ -256,8 +254,11 @@ export default {
 			this.alertIsActive = !this.alertIsActive
 			return this.alertIsActive
 		},
-		async setInfo(data) {
-			await this.createSale(data)
+		getDataByName(data) {
+			this.customerSelected = data.id
+		},
+		setInfo(data) {
+			this.createSale(data)
 			this.toogleAlert()
 		},
 		toogleCheck() {

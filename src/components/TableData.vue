@@ -123,6 +123,7 @@ export default {
 					RFC: 'RFC',
 					wayToPay: 'Forma de pago',
 					CFDI: 'CFDI',
+					address: 'Dirección',
 				}
 				break
 			case 'sale':

@@ -67,6 +67,16 @@
 				inner-class="$reset inner"
 				outer-class="name"
 			/>
+
+			<FormKit
+				id="address"
+				type="text"
+				label="Dirección"
+				v-model="data.address"
+				input-class="$reset input"
+				inner-class="$reset inner"
+				outer-class="name"
+			/>
 		</FormKit>
 		<table-data :typeTable="'customer'" />
 	</div>
@@ -87,6 +97,7 @@ export default {
 			RFC: '',
 			wayToPay: 'EFECTIVO',
 			CFDI: '',
+			address: '',
 		},
 	}),
 
@@ -99,6 +110,9 @@ export default {
 		},
 		'data.CFDI'(newCFDI) {
 			if (newCFDI) this.data.CFDI = newCFDI.toUpperCase()
+		},
+		'data.address'(newAddress) {
+			if (newAddress) this.data.address = newAddress.toUpperCase()
 		},
 	},
 

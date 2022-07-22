@@ -12,6 +12,7 @@ export interface Sale {
 	phone: string
 	RFC?: string
 	CFDI?: string
+	address?: string
 	wayToPay?: 'EFECTIVO' | 'TARJETA CREDITO/DEBITO'
 	material: Stock[] | []
 }

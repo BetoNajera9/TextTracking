@@ -140,7 +140,9 @@ export default {
 				propsTable.value = {
 					ISBN: 'ISBN',
 					description: 'Descripcion',
-					number: 'Cantidad',
+					in: 'Entradas',
+					out: 'Salidas',
+					stock: 'Existencias',
 					unitPrice: 'Precio unitario',
 				}
 				break
@@ -180,7 +182,8 @@ export default {
 		const setInfo = (data) => {
 			if (data) {
 				const stock = store.getters.stock(idSelected.value)
-				stock.number += data.discount
+				stock.in += data.discount
+				stock.stock += data.discount
 				ipcRenderer.send(
 					'update-stock',
 					{ id: idSelected.value },

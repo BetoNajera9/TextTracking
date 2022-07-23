@@ -25,7 +25,10 @@
 					<span v-else-if="editingId !== data.id">
 						<span
 							v-if="
-								prop === 'unitPrice' || prop === 'amount' || prop === 'total'
+								prop === 'unitPrice' ||
+								prop === 'amount' ||
+								prop === 'total' ||
+								prop === 'subtotal'
 							"
 						>
 							${{
@@ -158,9 +161,7 @@ export default {
 				propsTable.value = {
 					id: 'Folio',
 					date: 'Fecha',
-					description: 'Descripcion',
-					number: 'Cantidad',
-					unitPrice: 'Precio unitario',
+					subtotal: 'Subtotal',
 					discount: 'Descuento',
 					total: 'Importe',
 				}
@@ -266,14 +267,14 @@ export default {
 		}
 
 		const editRow = (id) => {
-			if (props.typeTable === 'account') {
-				dataEdit.value = JSON.parse(
-					JSON.stringify(store.getters.accountMovement(props.filters[0].id, id))
-				)
-			} else
-				dataEdit.value = JSON.parse(
-					JSON.stringify(store.getters[`${props.typeTable}`](id))
-				)
+			// if (props.typeTable === 'account') {
+			// 	dataEdit.value = JSON.parse(
+			// 		JSON.stringify(store.getters.accountMovement(props.filters[0].id, id))
+			// 	)
+			// } else
+			dataEdit.value = JSON.parse(
+				JSON.stringify(store.getters[`${props.typeTable}`](id))
+			)
 
 			toogleEditing(id)
 		}

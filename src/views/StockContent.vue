@@ -34,10 +34,10 @@
 				outer-class="description"
 			/>
 			<FormKit
-				id="number"
+				id="int"
 				type="number"
-				label="Cantidad"
-				v-model="data.number"
+				label="Entradas"
+				v-model="data.in"
 				validation="required"
 				:validation-messages="{
 					required: 'La cantidad es requerida.',
@@ -114,7 +114,7 @@ export default {
 		data: {
 			ISBN: '',
 			description: '',
-			number: 0,
+			in: 0,
 			unitPrice: 0,
 		},
 	}),
@@ -122,8 +122,8 @@ export default {
 		'data.description'(newDescription) {
 			if (newDescription) this.data.description = newDescription.toUpperCase()
 		},
-		'data.number'(newNumber) {
-			if (newNumber) this.data.number = Number(newNumber)
+		'data.in'(newInt) {
+			if (newInt) this.data.in = Number(newInt)
 		},
 		'data.unitPrice'(newUnitPrice) {
 			if (newUnitPrice) this.data.unitPrice = Number(newUnitPrice)

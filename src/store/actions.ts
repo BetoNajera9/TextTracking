@@ -155,7 +155,11 @@ export const actions: ActionTree<State, State> & Actions = {
 
 		data.material.map((element: Stock) => {
 			const stock = context.getters.stock(element.id)
-			stock.number = stock.number - element.number
+			if (element.number) {
+				stock.out += element.number
+				stock.stock = stock.in - stock.out
+			}
+
 			ipcRenderer.send('update-stock', { id: stock.id }, { ...stock })
 		})
 

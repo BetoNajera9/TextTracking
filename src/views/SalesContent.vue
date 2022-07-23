@@ -73,7 +73,7 @@
 								inner-class="$reset inner"
 							/>
 
-							<!-- <FormKit
+							<FormKit
 								id="wayToPay"
 								type="select"
 								label="Forma de pago"
@@ -81,13 +81,23 @@
 								:options="['EFECTO', 'TARJETA DE CREDITO/DEBITO']"
 								input-class="$reset input"
 								inner-class="$reset inner"
-							/> -->
+							/>
 
 							<FormKit
 								id="CFDI"
 								type="text"
 								label="Uso de CFDI"
 								v-model="customerData.CFDI"
+								input-class="$reset input"
+								inner-class="$reset inner"
+								outer-class="name"
+							/>
+
+							<FormKit
+								id="address"
+								type="text"
+								label="Dirección"
+								v-model="customerData.address"
 								input-class="$reset input"
 								inner-class="$reset inner"
 								outer-class="name"
@@ -196,6 +206,7 @@ export default {
 			RFC: '',
 			wayToPay: 'EFECTIVO',
 			CFDI: '',
+			address: '',
 		},
 		saleData: {
 			id: '',
@@ -216,8 +227,11 @@ export default {
 		'customerData.CFDI'(newCFDI) {
 			this.customerData.CFDI = newCFDI.toUpperCase()
 		},
-		'saleData.number'(newnumber) {
-			this.saleData.number = Number(newnumber)
+		'data.address'(newAddress) {
+			if (newAddress) this.data.address = newAddress.toUpperCase()
+		},
+		'saleData.number'(newNumber) {
+			this.saleData.number = Number(newNumber)
 		},
 		'saleData.unitPrice'(newunitPrice) {
 			this.saleData.unitPrice = Number(newunitPrice)
@@ -269,12 +283,12 @@ export default {
 		},
 		getData(data) {
 			const dataMaterial = this.$store.getters.stock(data.id)
-			if (dataMaterial.number > 0) {
-				if (dataMaterial.number < 10)
-					this.errorMenssage = `Solo queda ${dataMaterial.number} existencia`
+			if (dataMaterial.stock > 0) {
+				if (dataMaterial.stock < 10)
+					this.errorMenssage = `Solo queda ${dataMaterial.stock} existencia`
 				else this.errorMenssage = ''
 
-				this.max = Number(dataMaterial.number)
+				this.max = Number(dataMaterial.stock)
 				this.saleData.id = dataMaterial.id
 				this.saleData.description = dataMaterial.description
 				this.saleData.unitPrice = dataMaterial.unitPrice
@@ -329,6 +343,7 @@ export default {
 					data.name = this.getCustomerName(this.customerSelected)
 					data.phone = this.customer.phone
 					data.RFC = this.customer.RFC
+					data.address = this.customer.address
 					ipcRenderer.send('create-sale', JSON.parse(JSON.stringify(data)))
 					this.$store.dispatch(ActionTypes.emptySales)
 					this.emptyData()

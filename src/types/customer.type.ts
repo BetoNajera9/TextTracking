@@ -5,4 +5,5 @@ export interface Customer {
 	RFC?: string
 	wayToPay: 'EFECTIVO' | 'TARJETA CREDITO/DEBITO'
 	CFDI?: string
+	address?: string
 }

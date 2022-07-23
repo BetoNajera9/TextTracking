@@ -2,7 +2,10 @@ export interface Stock {
 	id: string
 	ISBN?: string
 	description: string
-	number: number
+	in: number
+	out: number
+	stock: number
+	number?: number
 	unitPrice: number
 	amount?: number
 }

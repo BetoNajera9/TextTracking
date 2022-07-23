@@ -272,6 +272,8 @@ ipcMain.on('getStock', (e, data) => {
 })
 
 ipcMain.on('create-stock', (e, data) => {
+	data.stock = data.in
+	data.out = 0
 	const id = v4()
 	db.connection
 		.get('stock')

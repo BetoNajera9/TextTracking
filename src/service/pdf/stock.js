@@ -60,9 +60,8 @@ export const generateStockPdf = (path, data) => {
 		columnStyles: {
 			0: { halign: 'center', cellWidth: 40 },
 			2: { halign: 'center', cellWidth: 30 },
-			3: { halign: 'right', cellWidth: 30 },
 		},
-		head: [['ISBN', 'DESCRIPCION', 'CANTIDAD', 'PRECIO UNITARIO']],
+		head: [['ISBN', 'DESCRIPCION', 'ENTRADA', 'SALIDA', 'CANTIDAD']],
 		body: getBody(data),
 	})
 
@@ -76,17 +75,9 @@ const getBody = (data) => {
 		const row = []
 		row.push(element.ISBN || '')
 		row.push(element.description || '')
-		row.push(`${element.number || '0'}`)
-		row.push(
-			`$ ${
-				element.unitPrice
-					? element.unitPrice
-							.toFixed(2)
-							.toString()
-							.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-					: '0'
-			}`
-		)
+		row.push(`${element.in || '0'}`)
+		row.push(`${element.out || '0'}`)
+		row.push(`${element.stock || '0'}`)
 		body.push(row)
 	})
 	return body

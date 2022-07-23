@@ -78,24 +78,13 @@ export const generateAccountPdf = (path, data) => {
 		startY: finalY,
 		headStyles: { halign: 'center' },
 		columnStyles: {
-			0: { cellWidth: 30 },
+			0: { cellWidth: 40 },
 			1: { halign: 'center' },
+			2: { halign: 'right' },
 			3: { halign: 'center' },
-			4: { halign: 'center' },
-			5: { halign: 'center' },
-			6: { halign: 'right', cellWidth: 20 },
+			4: { halign: 'right' },
 		},
-		head: [
-			[
-				'FOLIO',
-				'FECHA',
-				'DESCRIPCION',
-				'CANTIDAD',
-				'PRECION UNITARIO',
-				'DESCUENTO',
-				'IMPORTE',
-			],
-		],
+		head: [['FOLIO', 'FECHA', 'SUBTOTAL', 'DESCUENTO', 'IMPORTE']],
 		body: getBody(data.movements),
 	})
 
@@ -147,12 +136,10 @@ const getBody = (data) => {
 		row.push(
 			`${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`
 		)
-		row.push(element.description ?? '-')
-		row.push(`${element.number ?? '-'}`)
 		row.push(
 			`$ ${
-				element.unitPrice
-					? element.unitPrice
+				element.subtotal
+					? element.subtotal
 							.toFixed(2)
 							.toString()
 							.replace(/\B(?=(\d{3})+(?!\d))/g, ',')

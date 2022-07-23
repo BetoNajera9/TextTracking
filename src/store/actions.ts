@@ -170,19 +170,18 @@ export const actions: ActionTree<State, State> & Actions = {
 			const id = data.customerId
 			delete data.customerId
 
-			data.material.map((element: Stock) => {
-				ipcRenderer.send(
-					'add-movements-to-account',
-					{ id },
-					{
-						movement: 'CHARGE',
-						...element,
-						total: element.amount,
-						date: new Date(),
-						id: data.id,
-					}
-				)
-			})
+			ipcRenderer.send(
+				'add-movements-to-account',
+				{ id },
+				{
+					movement: 'CHARGE',
+					subtotal: data.subtotal,
+					discount: data.discount,
+					total: data.total,
+					date: new Date(),
+					id: data.id,
+				}
+			)
 		}
 	},
 	[ActionTypes.emptySales]({ commit }) {

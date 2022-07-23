@@ -230,8 +230,8 @@ export default {
 		'data.address'(newAddress) {
 			if (newAddress) this.data.address = newAddress.toUpperCase()
 		},
-		'customerData.number'(newnumber) {
-			this.saleData.number = Number(newnumber)
+		'saleData.number'(newNumber) {
+			this.saleData.number = Number(newNumber)
 		},
 		'saleData.unitPrice'(newunitPrice) {
 			this.saleData.unitPrice = Number(newunitPrice)
@@ -283,12 +283,12 @@ export default {
 		},
 		getData(data) {
 			const dataMaterial = this.$store.getters.stock(data.id)
-			if (dataMaterial.number > 0) {
-				if (dataMaterial.number < 10)
-					this.errorMenssage = `Solo queda ${dataMaterial.number} existencia`
+			if (dataMaterial.stock > 0) {
+				if (dataMaterial.stock < 10)
+					this.errorMenssage = `Solo queda ${dataMaterial.stock} existencia`
 				else this.errorMenssage = ''
 
-				this.max = Number(dataMaterial.number)
+				this.max = Number(dataMaterial.stock)
 				this.saleData.id = dataMaterial.id
 				this.saleData.description = dataMaterial.description
 				this.saleData.unitPrice = dataMaterial.unitPrice

@@ -1,7 +1,7 @@
 {
 	"name": "marce-s-project",
 	"version": "1.1.0",
-	"main": "dist/electron/main/index.js",
+	"main": "dist/electron/backend/index.js",
 	"description": "",
 	"license": "MIT",
 	"private": true,

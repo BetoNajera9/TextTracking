@@ -13,10 +13,10 @@ export default defineConfig({
     vue(),
     electron({
       main: {
-        entry: 'electron/main/index.ts',
+        entry: 'electron/backend/index.ts',
         vite: {
           build: {
-            outDir: 'dist/electron/main',
+            outDir: 'dist/electron/backend',
           },
         },
       },

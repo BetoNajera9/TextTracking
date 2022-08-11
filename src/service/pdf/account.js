@@ -78,10 +78,10 @@ export const generateAccountPdf = (path, data) => {
 		startY: finalY,
 		headStyles: { halign: 'center' },
 		columnStyles: {
-			0: { cellWidth: 40 },
+			0: { cellWidth: 50, fontSize: 7 },
 			1: { halign: 'center' },
 			2: { halign: 'right' },
-			3: { halign: 'center' },
+			3: { halign: 'right' },
 			4: { halign: 'right' },
 		},
 		head: [['FOLIO', 'FECHA', 'SUBTOTAL', 'DESCUENTO', 'IMPORTE']],

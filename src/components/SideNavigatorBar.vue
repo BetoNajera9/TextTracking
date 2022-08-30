@@ -49,6 +49,13 @@
 				</router-link>
 				<span class="tooltip">Estados de cuenta</span>
 			</li>
+			<li>
+				<router-link to="/debit-balance">
+					<mdicon class="icon" name="list-status" />
+					<span class="link-name">Saldo deudor</span>
+				</router-link>
+				<span class="tooltip">Saldo deudor</span>
+			</li>
 		</ul>
 	</div>
 </template>

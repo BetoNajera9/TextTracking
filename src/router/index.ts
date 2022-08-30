@@ -1,10 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import AccountStatesContent from '../views/AccountStatesContent.vue'
 import CustomerContent from '../views/CustomerContent.vue'
+import HistoryContent from '../views/HistoryContent.vue'
 import SalesContent from '../views/SalesContent.vue'
 import StockContent from '../views/StockContent.vue'
-import HistoryContent from '../views/HistoryContent.vue'
+import DebitBalance from '../views/DebitBalance.vue'
 import Home from '../views/Home.vue'
-import AccountStatesContent from '../views/AccountStatesContent.vue'
+
 
 const routes = [
 	{
@@ -36,6 +38,11 @@ const routes = [
 		path: '/account-states',
 		name: 'account-states',
 		component: AccountStatesContent,
+	},
+	{
+		path: '/debit-balance',
+		name: 'debit-balance',
+		component: DebitBalance,
 	},
 ]
 

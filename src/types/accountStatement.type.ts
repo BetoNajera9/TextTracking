@@ -5,6 +5,6 @@ export interface AccountStatement {
 	name: string
 	phone: string
 	RFC?: string
-	total: string
+	total: number
 	movements: Movement[]
 }

@@ -1,6 +1,6 @@
 import { GetterTree } from 'vuex'
 
-import { Stock, Customer, Sale, AccountStatement, Movement } from '../types'
+import { Stock, Customer, Sale, AccountStatement, Movement, DebitBalance } from '../types'
 import { State } from './state'
 
 export type Getters = {
@@ -28,6 +28,10 @@ export type Getters = {
 	accountMovement(
 		state: State
 	): (userId: string, movementId: string) => AccountStatement | undefined
+
+	//DEBIT BALANCE
+	debitBalance(state: State): (id: string) => DebitBalance[] | undefined
+
 }
 
 export const getters: GetterTree<State, State> & Getters = {
@@ -98,4 +102,36 @@ export const getters: GetterTree<State, State> & Getters = {
 			return account
 		}
 	},
+	debitBalance(state: State) {
+		return (id?: string) => {
+			if (!id) {
+				const data: DebitBalance[] = []
+				state.customers.map((customer: Customer) => {
+					const account = state.accountsStatements.find((account: AccountStatement) => {
+						return customer.id === account.id
+					})
+					if (account) {
+						data.push({
+							id: account?.id,
+							name: account?.name,
+							RFC: account?.RFC,
+							total: account?.total
+						})
+					}
+				})
+				return data
+			}
+
+			const account = state.accountsStatements.find((account: AccountStatement) => id === account.id)
+			if (account) {
+				return [{
+					id: account?.id,
+					name: account?.name,
+					RFC: account?.RFC,
+					total: account?.total
+				}]
+			}
+		}
+	},
+
 }

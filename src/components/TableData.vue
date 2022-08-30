@@ -6,7 +6,7 @@
 				<th v-for="prop in propsTable" :key="prop">
 					<span>{{ prop }}</span>
 				</th>
-				<th>Acciones</th>
+				<th v-if="typeTable !== 'debitBalance'">Acciones</th>
 			</tr>
 			<tr v-for="data in content" :key="data.id">
 				<td v-for="(value, prop) in propsTable" :key="prop">
@@ -62,7 +62,7 @@
 						:disabled="prop === 'amount' || data.total > 0 ? true : false"
 					/>
 				</td>
-				<td>
+				<td v-if="typeTable !== 'debitBalance'">
 					<mdicon
 						v-show="typeTable === 'stock'"
 						class="iconTable plus"
@@ -166,6 +166,13 @@ export default {
 					total: 'Importe',
 				}
 				break
+			case 'debitBalance':
+				propsTable.value = {
+					name: 'Nombre',
+					RFC: 'RFC',
+					total: 'Saldo',
+				}
+				break
 		}
 
 		const idSelected = ref('')
@@ -201,6 +208,9 @@ export default {
 				if (props.filters.length <= 0) return []
 				const data = store.getters.account(props.filters[0].id)
 				return data.movements
+			} else if (props.typeTable === 'debitBalance') {
+				const data = store.getters.debitBalance(props.filters[0]?.id)
+				return data
 			} else if (props.filters) {
 				if (props.filters.length > 0) {
 					const data = store.getters[`${props.typeTable}s`]

@@ -148,6 +148,34 @@ export const generateSalePdf = (path, data) => {
 	doc.setFontSize(8)
 	doc.text('FECHA Y FIRMA DE CONFORMIDAD', 25, doc.lastAutoTable.finalY + 35)
 
+	doc.text('OBSERVACIONES:', minX, doc.lastAutoTable.finalY + 49)
+	doc.line(
+		minX,
+		doc.lastAutoTable.finalY + 50,
+		maxX,
+		doc.lastAutoTable.finalY + 50
+	)
+	doc.line(
+		minX,
+		doc.lastAutoTable.finalY + 50,
+		minX,
+		doc.lastAutoTable.finalY + 70
+	)
+	doc.line(
+		maxX,
+		doc.lastAutoTable.finalY + 50,
+		maxX,
+		doc.lastAutoTable.finalY + 70
+	)
+	doc.line(
+		minX,
+		doc.lastAutoTable.finalY + 70,
+		maxX,
+		doc.lastAutoTable.finalY + 70
+	)
+	const lines = doc.setFontSize(8).splitTextToSize(data.remarks, 170)
+	doc.text(minX + 2, doc.lastAutoTable.finalY + 55, lines)
+
 	doc.save(path)
 }
 

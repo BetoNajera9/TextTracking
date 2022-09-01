@@ -172,6 +172,15 @@
 				/>
 			</div>
 			<label class="error-label">{{ errorMenssage }}</label>
+			<div>
+				<FormKit
+					type="textarea"
+					label="Observaciones"
+					rows="5"
+					placeholder="Observaciones."
+					v-model="remarks"
+				/>
+			</div>
 			<FormKit type="button" label="Crear" @click="toogleAlert" />
 		</div>
 		<table-data :typeTable="'sale'" />
@@ -200,6 +209,7 @@ export default {
 		max: 0,
 		alertIsActive: ref(false),
 		data: { message: 'Descuento general', label: 'Descuento', discount: true },
+		remarks: '',
 		customerData: {
 			name: '',
 			phone: '',
@@ -265,7 +275,14 @@ export default {
 
 	methods: {
 		toogleAlert() {
-			this.alertIsActive = !this.alertIsActive
+			if (
+				(this.customerSelected !== '' || this.customerData.name !== '') &&
+				this.sales.length !== 0
+			) {
+				this.alertIsActive = true
+				return this.alertIsActive
+			}
+			this.alertIsActive = false
 			return this.alertIsActive
 		},
 		getDataByName(data) {
@@ -328,6 +345,7 @@ export default {
 				data.material = this.sales
 				data.date = new Date()
 				data.subtotal = this.subtotal
+				data.remarks = this.remarks
 				if (discountData) {
 					data.total =
 						this.subtotal - this.subtotal * (discountData.discount / 100)

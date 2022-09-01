@@ -10,6 +10,7 @@ export interface Sale {
 	customerId?: string
 	name: string
 	phone: string
+	remarks: string
 	RFC?: string
 	CFDI?: string
 	address?: string

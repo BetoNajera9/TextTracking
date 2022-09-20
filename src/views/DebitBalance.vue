@@ -21,12 +21,13 @@
 				/>
 			</div>
 		</div>
-		<FormKit type="button" label="PDF" @click="" />
+		<FormKit type="button" label="PDF" @click="createPDF" />
 		<table-data :typeTable="'debitBalance'" :filters="filters" />
 	</div>
 </template>
 
 <script>
+import { ipcRenderer } from 'electron'
 import { computed, ref } from 'vue'
 
 import AlertWindow from '../components/alertWIndow.vue'
@@ -56,9 +57,16 @@ export default {
 			)
 		}
 
+		const createPDF = () => {
+			const data = store.getters.debitBalance(filters.value[0]?.id)
+
+			ipcRenderer.send('save-debit-balance-pdf', data)
+		}
+
 		return {
 			getDataByName,
 			removeFilter,
+			createPDF,
 			isActive,
 			filters,
 		}

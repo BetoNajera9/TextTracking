@@ -24,6 +24,7 @@ class DB {
 		this.db = low(this.adapter)
 		this.db
 			.defaults({
+				salesFolio: 1,
 				customers: [],
 				sales: [],
 				stock: [],

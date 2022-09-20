@@ -1,5 +1,4 @@
 import { ipcMain } from 'electron'
-import { v4 } from 'uuid'
 
 import db from '../../lib/database'
 
@@ -11,14 +10,17 @@ export const Sale = () => {
   })
 
   ipcMain.on('create-sale', (e, data) => {
-    const id = v4()
+    const id = db.connection.get('salesFolio').value()
+    db.connection.set('salesFolio', id + 1).write()
+
+    const idFormated = format(id, 7)
 
     db.connection
       .get('sales')
-      .push({ id, ...data })
+      .push({ id: idFormated, ...data })
       .write()
 
-    e.reply('set-sale', { id, ...data })
+    e.reply('set-sale', { id: idFormated, ...data })
   })
 
   ipcMain.on('update-history', (e, findData, newData) => {
@@ -32,4 +34,10 @@ export const Sale = () => {
 
     e.reply('delete-history-from-store', { id })
   })
+}
+
+const format = (num, size: number) => {
+  num = num.toString()
+  while (num.length < size) num = '0' + num
+  return num
 }

@@ -32,4 +32,17 @@ export const Pdf = (app: App, win: BrowserWindow) => {
     e.reply('generate-stock-pdf', path, data)
   })
 
+  ipcMain.on('save-debit-balance-pdf', async (e, data) => {
+    const now = new Date()
+    const path = await dialog.showSaveDialog(win as BrowserWindow, {
+      defaultPath: join(
+        app.getPath('downloads'),
+        `${now.getDate()}${now.getMonth() + 1
+        }${now.getFullYear()}${now.getHours()}_debit_balance.pdf`
+      ),
+    })
+
+    e.reply('generate-debit-balance-pdf', path, data)
+  })
+
 }

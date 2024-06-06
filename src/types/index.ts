@@ -1,6 +1,0 @@
-export * from './accountStatement.type'
-export * from './customer.type'
-export * from './sales.type'
-export * from './stock.type'
-export * from './movements.type'
-export * from './debitBalance.type'

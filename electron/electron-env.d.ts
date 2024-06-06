@@ -1,8 +1,27 @@
+/// <reference types="vite-plugin-electron/electron-env" />
 
 declare namespace NodeJS {
   interface ProcessEnv {
-    NODE_ENV: 'development' | 'production'
-    readonly VITE_DEV_SERVER_HOST: string
-    readonly VITE_DEV_SERVER_PORT: string
+    /**
+     * The built directory structure
+     *
+     * ```tree
+     * ├─┬─┬ dist
+     * │ │ └── index.html
+     * │ │
+     * │ ├─┬ dist-electron
+     * │ │ ├── main.js
+     * │ │ └── preload.js
+     * │
+     * ```
+     */
+    APP_ROOT: string
+    /** /dist/ or /public/ */
+    VITE_PUBLIC: string
   }
+}
+
+// Used in Renderer process, expose in `preload.ts`
+interface Window {
+  ipcRenderer: import('electron').IpcRenderer
 }

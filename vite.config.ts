@@ -48,8 +48,10 @@ export default defineConfig({
       '@common': path.resolve(__dirname, './src/modules/common'),
       '@sales': path.resolve(__dirname, './src/modules/sales'),
       '@home': path.resolve(__dirname, './src/modules/home'),
-      '@router': path.resolve(__dirname, './src/router'),
-      '@store': path.resolve(__dirname, './src/store'),
+      '@': path.resolve(__dirname, './src'),
+      '~api': path.resolve(__dirname, './electron/api'),
+      '~lib': path.resolve(__dirname, './electron/lib'),
+      '~': path.resolve(__dirname, './electron'),
     },
   },
   optimizeDeps: {

@@ -55,6 +55,15 @@
       ],
       "@/*": [
         "src/*"
+      ],
+      "~api/*": [
+        "electron/api/*"
+      ],
+      "~lib/*": [
+        "electron/lib/*"
+      ],
+      "~/*": [
+        "electron/*"
       ]
     }
   },

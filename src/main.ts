@@ -1,27 +1,32 @@
-import { createApp } from 'vue'
+import { createProPlugin, inputs } from '@formkit/pro'
 import { plugin, defaultConfig } from '@formkit/vue'
+import { createPinia } from 'pinia'
+import { createApp } from 'vue'
 
-import * as mdijs from '@mdi/js'
-import '@formkit/themes/genesis'
-import mdiVue from 'mdi-vue/v3'
-import { store } from './store'
-import router from './router'
+import * as Mdijs from '@mdi/js'
+import MdiVue from 'mdi-vue/v3'
+
+import Router from './router'
 import App from './App.vue'
 
-import './service/api/accountsStatements'
-import './service/api/customer'
-import './service/app/dialog'
-import './service/api/sales'
-import './service/api/stock'
+import '@formkit/themes/genesis'
+import './style.css'
+
+const Pinia = createPinia()
+
+const pro = createProPlugin(import.meta.env.VITE_FORMKIT_KEY, inputs)
 
 createApp(App)
-	.use(store)
-	.use(router)
-	.use(mdiVue, {
-		icons: mdijs,
-	})
-	.use(plugin, defaultConfig)
-	.mount('#app')
-	.$nextTick(() => {
-		postMessage({ payload: 'removeLoading' }, '*')
-	})
+  .use(
+    plugin,
+    defaultConfig({
+      plugins: [pro],
+    })
+  )
+  .use(Pinia)
+  .use(Router)
+  .use(MdiVue, {
+    icons: Mdijs,
+  })
+  .mount('#app')
+  .$nextTick(() => { })

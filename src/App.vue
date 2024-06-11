@@ -1,42 +1,18 @@
 <template>
-	<router-view :setActive="isActive" />
-	<side-navigator-bar :getActive="getActiveBar" />
+	<router-view />
+	<side-navigator-bar :getActive="true" />
 </template>
 
-<script>
-import SideNavigatorBar from './components/SideNavigatorBar.vue'
-import { onBeforeMount, ref } from 'vue'
-import { ipcRenderer } from 'electron'
+<script setup lang="ts">
+import { SideNavigatorBar } from '@common/components'
+import { useCustomerStore } from '@/store'
 
-export default {
-	name: 'App',
-	components: {
-		SideNavigatorBar,
-	},
+const customerStore = useCustomerStore()
 
-	setup() {
-		const isActive = ref(false)
-
-		const getActiveBar = () => {
-			isActive.value = !isActive.value
-		}
-
-		onBeforeMount(() => {
-			ipcRenderer.send('get-and-set-customers')
-			ipcRenderer.send('get-and-set-stock')
-			ipcRenderer.send('get-sale-set-history')
-			ipcRenderer.send('get-and-set-account-statements')
-		})
-
-		return {
-			getActiveBar,
-			isActive,
-		}
-	},
-}
+customerStore.syncCustomers()
 </script>
 
-<style>
+<style scoped>
 #app {
 	font-family: Avenir, Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;

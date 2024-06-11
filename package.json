@@ -9,17 +9,20 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@formkit/pro": "^0.126.9",
     "@formkit/themes": "1.6.5",
     "@formkit/vue": "1.6.5",
     "@mdi/js": "7.4.47",
     "lowdb": "7.0.1",
     "mdi-vue": "3.0.13",
     "pinia": "2.1.7",
+    "uuid": "^10.0.0",
     "vite-tsconfig-paths": "^4.3.2",
     "vue": "3.4.21",
     "vue-router": "4.3.2"
   },
   "devDependencies": {
+    "@types/uuid": "^9.0.8",
     "@vitejs/plugin-vue": "5.0.4",
     "@vue/devtools": "^6.6.3",
     "autoprefixer": "^10.4.19",
